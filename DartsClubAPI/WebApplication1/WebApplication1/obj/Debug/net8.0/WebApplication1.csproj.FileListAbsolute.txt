@@ -44,3 +44,6 @@ D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\obj\Debu
 D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\obj\Debug\net8.0\WebApplication1.pdb
 D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\obj\Debug\net8.0\WebApplication1.genruntimeconfig.cache
 D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\obj\Debug\net8.0\ref\WebApplication1.dll
+D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\bin\Debug\net8.0\Elasticsearch.Net.dll
+D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\bin\Debug\net8.0\Nest.dll
+D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\bin\Debug\net8.0\Newtonsoft.Json.dll
