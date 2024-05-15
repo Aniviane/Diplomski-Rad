@@ -1,11 +1,16 @@
 using Elasticsearch.Net;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver.Core.Configuration;
 using Nest;
 using WebApplication1.Controllers.Services;
 using WebApplication1.Models;
+using WebApplication1.Models.Framework_Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddControllers();
 
 
 // Add services to the container.
@@ -15,6 +20,9 @@ builder.Services.Configure<ElasticsearchSettings>(
     builder.Configuration.GetSection("ElasticSettings"));
 
 builder.Services.AddSingleton<MongoService>();
+
+builder.Services.AddDbContext<DataContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DartsClubDb")));
 
 builder.Services.AddSingleton<IElasticClient>(sp =>
 {
@@ -34,7 +42,6 @@ builder.Services.AddSingleton<IElasticClient>(sp =>
 
 builder.Services.AddScoped<ElasticService>();
 
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
