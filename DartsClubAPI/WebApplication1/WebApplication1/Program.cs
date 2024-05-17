@@ -24,6 +24,8 @@ builder.Services.AddSingleton<MongoService>();
 builder.Services.AddDbContext<DataContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DartsClubDb")));
 
+builder.Services.AddStackExchangeRedisCache(options => { options.Configuration = builder.Configuration.GetConnectionString("Redis"); });
+
 builder.Services.AddSingleton<IElasticClient>(sp =>
 {
     var settings = sp.GetRequiredService<IOptions<ElasticsearchSettings>>().Value;

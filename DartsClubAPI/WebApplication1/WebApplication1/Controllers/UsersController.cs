@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 using WebApplication1.Models.Framework.Models;
 using WebApplication1.Models.Framework_Models;
 
@@ -16,9 +18,11 @@ namespace WebApplication1.Controllers
     {
         private readonly DataContext _context;
 
-        public UsersController(DataContext context)
+        private readonly IDistributedCache _redisCache;
+        public UsersController(DataContext context, IDistributedCache distributedCache)
         {
             _context = context;
+            _redisCache = distributedCache;
         }
 
         // GET: api/Users
@@ -27,6 +31,22 @@ namespace WebApplication1.Controllers
         {
             return await _context.Users.ToListAsync();
         }
+
+        [HttpPost("Login")]
+        public  ActionResult<User> LoginUser(string username, string password)
+        {
+            var user =  _context.Users.Where(x =>  x.Name == username && x.Password == password ).FirstOrDefault();
+
+            if (user == null) return BadRequest();
+
+             _redisCache.SetString(user.ID.ToString(), JsonConvert.SerializeObject(new Tuple<string, string>(username, password)));
+
+            var item = JsonConvert.DeserializeObject<Tuple<string, string>>(_redisCache.GetString(user.ID.ToString()));
+
+            return user;
+        }
+
+
 
         // GET: api/Users/5
         [HttpGet("{id}")]

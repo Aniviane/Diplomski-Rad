@@ -266,3 +266,9 @@ D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\bin\Debu
 D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
 D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
+D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\bin\Debug\net8.0\Microsoft.Extensions.Caching.StackExchangeRedis.dll
+D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\bin\Debug\net8.0\Pipelines.Sockets.Unofficial.dll
+D:\Diplomski\Diplomski-Rad\DartsClubAPI\WebApplication1\WebApplication1\bin\Debug\net8.0\StackExchange.Redis.dll
