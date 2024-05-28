@@ -4,7 +4,7 @@
     {
        
 
-        public Guid ID { get; set; }
+        public Guid? ID { get; set; }
 
         public DateTime Day { get; set; }
         
@@ -14,7 +14,7 @@
 
         public Guid UserId { get; set; }
 
-        public Reservation(Guid iD, User user, DateTime day, int hour, Guid userId)
+        public Reservation(Guid? iD, User user, DateTime day, int hour, Guid userId)
         {
             ID = iD;
             Day = day;

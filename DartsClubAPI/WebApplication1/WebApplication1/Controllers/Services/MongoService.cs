@@ -37,5 +37,10 @@ namespace WebApplication1.Controllers.Services
         public async Task RemoveAsync(string id) =>
             await _gameCollection.DeleteOneAsync(x => x.GameId == id);
 
+        public async Task<List<Game>> FindGamesById(Guid id)
+        {
+           return await _gameCollection.Find(x => x.PlayerIds.Contains(id)).ToListAsync();
+        }
+
     }
 }

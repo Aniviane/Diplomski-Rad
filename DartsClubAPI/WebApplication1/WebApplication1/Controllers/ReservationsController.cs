@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models.Framework.Models;
+using WebApplication1.Models.Framework.Models.DTOs;
 using WebApplication1.Models.Framework_Models;
 
 namespace WebApplication1.Controllers
@@ -23,14 +24,22 @@ namespace WebApplication1.Controllers
 
         // GET: api/Reservations
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
+        public async Task<ActionResult<IEnumerable<ReservationDTO>>> GetReservations()
         {
-            return await _context.Reservations.ToListAsync();
+            var ret = await _context.Reservations.ToListAsync();
+
+            List<ReservationDTO> reservations = new List<ReservationDTO>();
+
+            foreach(var res in ret)
+            {
+                reservations.Add(new ReservationDTO(res));
+            }
+            return reservations;
         }
 
         // GET: api/Reservations/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Reservation>> GetReservation(Guid id)
+        public async Task<ActionResult<ReservationDTO>> GetReservation(Guid id)
         {
             var reservation = await _context.Reservations.FindAsync(id);
 
@@ -39,7 +48,7 @@ namespace WebApplication1.Controllers
                 return NotFound();
             }
 
-            return reservation;
+            return new ReservationDTO(reservation);
         }
 
         // PUT: api/Reservations/5
@@ -73,15 +82,35 @@ namespace WebApplication1.Controllers
             return NoContent();
         }
 
+        [HttpGet("Hours")]
+        public ActionResult<List<int>> GetTakenHours(DateTime Date)
+        {
+            var date = new DateTime(Date.Year,Date.Month,Date.Day);
+            
+
+            var ret =  _context.Reservations.Where(Reservation => Reservation.Day == date);
+            List<int> Hours = new List<int>();
+            foreach (var res in ret)
+            {
+                Hours.Add(res.Hour);
+            }
+            return Ok(Hours);
+        }
+
         // POST: api/Reservations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
+        public async Task<ActionResult<ReservationDTO>> PostReservation(ReservationDTO reservation)
         {
-            _context.Reservations.Add(reservation);
+            var user = _context.Users.Find(reservation.UserId);
+            if (user == null) return BadRequest();
+            var day = new DateTime(reservation.Day.Year, reservation.Day.Month, reservation.Day.Day);
+            var res = new Reservation(reservation.ID, user, day, reservation.Hour, reservation.UserId);
+
+            _context.Reservations.Add(res);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReservation", new { id = reservation.ID }, reservation);
+            return CreatedAtAction("GetReservation", new { id = res.ID }, res);
         }
 
         // DELETE: api/Reservations/5
@@ -104,5 +133,7 @@ namespace WebApplication1.Controllers
         {
             return _context.Reservations.Any(e => e.ID == id);
         }
+
+       
     }
 }

@@ -29,6 +29,12 @@ namespace WebApplication1.Controllers
             return await _mongoService.GetAsync(id);
         }
 
+        [HttpGet("PlayerId/{id}")]
+        public async Task<List<Game>> GetGamesById(Guid id)
+        {
+            return await _mongoService.FindGamesById(id);
+        }
+
         // POST api/<GameController>
         [HttpPost]
         public async void Post([FromBody] Game value)
@@ -39,14 +45,16 @@ namespace WebApplication1.Controllers
 
         // PUT api/<GameController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async void Put(string id, [FromBody] Game value)
         {
+            await _mongoService.UpdateAsync(id, value);
         }
 
         // DELETE api/<GameController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async void Delete(string id)
         {
+            await _mongoService.RemoveAsync(id);
         }
     }
 }

@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using WebApplication1.Models.Framework.Models;
 using WebApplication1.Models.Framework_Models;
@@ -37,13 +41,36 @@ namespace WebApplication1.Controllers
         {
             var user =  _context.Users.Where(x =>  x.Name == username && x.Password == password ).FirstOrDefault();
 
-            if (user == null) return BadRequest();
+            if (user == null || user.ID == null) return BadRequest();
+            
 
-             _redisCache.SetString(user.ID.ToString(), JsonConvert.SerializeObject(new Tuple<string, string>(username, password)));
 
-            var item = JsonConvert.DeserializeObject<Tuple<string, string>>(_redisCache.GetString(user.ID.ToString()));
 
-            return user;
+                List<Claim> claims =
+                [
+                    new Claim(ClaimTypes.Role, user.isModerator.ToString()),
+                    new Claim(ClaimTypes.SerialNumber, user.ID.ToString()),
+                ];
+                SymmetricSecurityKey secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("TrueMovieAwardsTrueMovieAwardsTrueMovieAwardsTrueMovieAwards"));
+                var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+                var tokenOptions = new JwtSecurityToken(
+                    issuer: "https://localhost:7133/",
+                    claims: claims,
+                    expires: DateTime.Now.AddHours(1),
+                    signingCredentials: signinCredentials
+                    ); ;
+                string token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+
+
+
+
+                _redisCache.SetString(user.ID.ToString(), token);
+
+                var item = _redisCache.GetString(user.ID.ToString());
+
+                return user;
+            
         }
 
 
