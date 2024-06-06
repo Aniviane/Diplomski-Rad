@@ -1,5 +1,6 @@
 using Elasticsearch.Net;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver.Core.Configuration;
 using Nest;
@@ -35,7 +36,9 @@ builder.Services.AddSingleton<IElasticClient>(sp =>
     var consettings = new Nest.ConnectionSettings(uri).PrettyJson()
     .CertificateFingerprint("05a72f7b0e37e9f19ff30f74a9c83cb906ad74b2c91ecce08777776198702735")
     .BasicAuthentication("elastic", "Z09lH*X93-HBjo-tZ-xv")
-    .DefaultIndex("blog_articles")
+    .DefaultIndex("blog_posts2")
+    .DefaultMappingFor<BlogPost>(m => m.IdProperty(b => b.Id))
+    .DefaultFieldNameInferrer(p => p)
     .EnableApiVersioningHeader();
     var client = new ElasticClient(consettings);
     return client;
@@ -43,12 +46,18 @@ builder.Services.AddSingleton<IElasticClient>(sp =>
 );
 
 builder.Services.AddScoped<ElasticService>();
-
+builder.Services.AddCors(options => options.AddPolicy(name: "MovieAwardsOrigins", policy =>
+{
+    policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+}));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+
+app.UseCors("MovieAwardsOrigins");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -62,5 +71,12 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Pictures")),
+    RequestPath = "/Pictures"
+
+});
 
 app.Run();

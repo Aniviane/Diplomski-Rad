@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +12,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using WebApplication1.Models.DTO_s;
 using WebApplication1.Models.Framework.Models;
 using WebApplication1.Models.Framework_Models;
+using Nest;
+
+
 
 namespace WebApplication1.Controllers
 {
@@ -23,6 +28,9 @@ namespace WebApplication1.Controllers
         private readonly DataContext _context;
 
         private readonly IDistributedCache _redisCache;
+
+
+        private string serverPath = "https://localhost:7133";
         public UsersController(DataContext context, IDistributedCache distributedCache)
         {
             _context = context;
@@ -33,7 +41,147 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.Include(x => x.Picture).ToListAsync();
+        }
+
+
+        [HttpPost("Picture")]
+        public async Task<string> SetPicture(UploadPictureDTO dto)
+        {
+
+            var user = _context.Users.Find(dto.UserId);
+
+            if (user == null) return "invalid user";
+
+            if (user != null && dto.Picture.Length > 0)
+            {
+
+                var folderName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+
+                var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Pictures", "Users", folderName);
+
+                if (!Directory.Exists(folderPath))
+                    Directory.CreateDirectory(folderPath);
+
+                var imageExtension = Path.GetExtension(dto.Picture.FileName);
+
+                var imageName = "image" + imageExtension;
+
+                var imagePath = Path.Combine(folderPath, imageName);
+
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    dto.Picture.CopyTo(stream);
+                }
+
+                var pic = new Picture();
+                pic.imagePath = serverPath + "/Pictures/Users/" + folderName + "/" + imageName;
+                pic.UserId = user.ID;
+
+                _context.Pictures.Add(pic);
+                user.Picture = pic;
+                _context.SaveChanges();
+
+                return pic.imagePath;
+
+            }
+
+                return "picture set?";
+        }
+
+
+        [HttpPut("Picture")]
+        public async Task<string> UpdatePicture(UploadPictureDTO dto)
+        {
+            var user = _context.Users.Find(dto.UserId);
+
+            if (user == null) return "invalid user";
+
+            if (user.Picture == null)
+            {
+                if (dto.Picture.Length > 0)
+                {
+
+                    var folderName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+
+                    var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Pictures", "Users", folderName);
+
+                    if (!Directory.Exists(folderPath))
+                        Directory.CreateDirectory(folderPath);
+
+                    var imageExtension = Path.GetExtension(dto.Picture.FileName);
+
+                    var imageName = "image" + imageExtension;
+
+                    var imagePath = Path.Combine(folderPath, imageName);
+
+                    using (var stream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        dto.Picture.CopyTo(stream);
+                    }
+
+                    var pic = new Picture();
+                    pic.imagePath = serverPath + "/Pictures/Users/" + folderName + "/" + imageName;
+                    pic.UserId = user.ID;
+
+                    _context.Pictures.Add(pic);
+                    user.Picture = pic;
+                    _context.SaveChanges();
+
+                    return pic.imagePath;
+                }
+
+                return "something wrong with the picture";
+            }
+            
+            
+                var relativePath = user.Picture.imagePath.Replace(serverPath, "");
+
+                var absolutePath = Directory.GetCurrentDirectory() + relativePath;
+
+                absolutePath = absolutePath.Replace("/", "\\");
+
+                if (dto.Picture != null && dto.Picture.Length > 0)
+                {
+
+                    if (System.IO.File.Exists(absolutePath))
+                        System.IO.File.Delete(absolutePath);
+
+                    var folderName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+
+                    var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Pictures", "Users", folderName);
+
+                    if (!Directory.Exists(folderPath))
+                        Directory.CreateDirectory(folderPath);
+
+                    var imageExtension = Path.GetExtension(dto.Picture.FileName);
+
+                    var imageName = "image" + imageExtension;
+
+                    var imagePath = Path.Combine(folderPath, imageName);
+
+
+
+                    using (var stream = new FileStream(imagePath, FileMode.Create))
+                    {
+
+                        dto.Picture.CopyTo(stream);
+                    }
+
+                    var pic = new Picture();
+                    pic.imagePath = serverPath + "/Pictures/Users/" + folderName + "/" + imageName;
+                    pic.UserId = user.ID;
+
+                    user.Picture = pic;
+
+                    _context.SaveChanges();
+
+                    return pic.imagePath;
+                }
+            
+
+                return "Something wrong with the picture";
+            
         }
 
         [HttpPost("Login")]
@@ -66,6 +214,8 @@ namespace WebApplication1.Controllers
 
 
                 _redisCache.SetString(user.ID.ToString(), token);
+
+                
 
                 var item = _redisCache.GetString(user.ID.ToString());
 

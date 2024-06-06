@@ -29,27 +29,51 @@ namespace WebApplication1.Controllers
 
         // GET api/<BlogController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<BlogPost> Get(string id)
         {
-            return "value";
+            return await _elasticService.SearchBlog(id);
+        }
+
+        [HttpGet("Content/{content}")]
+        public async Task<List<BlogPost>> SearchContent(string content)
+        {
+            return await _elasticService.SearchContent(content);
+        }
+
+        [HttpGet("Category/{content}")]
+        public async Task<List<BlogPost>> SearchCategory(string content)
+        {
+            return await _elasticService.SearchCategory(content);
         }
 
         // POST api/<BlogController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<string> PostBlog([FromBody] BlogPost blog)
         {
+            return await _elasticService.InsertAsync(blog);
+
+        }
+
+        [HttpPut("Approve")]
+        public async Task<bool> ApproveBlog(string id)
+        {
+            return await _elasticService.Approve(id);
         }
 
         // PUT api/<BlogController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public async void Put( BlogPost value)
         {
+            await _elasticService.UpdateBlog(value);
         }
 
         // DELETE api/<BlogController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async void Delete(string id)
         {
+            await _elasticService.DeleteAsync(id);
         }
+
+
     }
 }

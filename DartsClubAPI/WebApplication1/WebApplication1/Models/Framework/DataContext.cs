@@ -12,6 +12,8 @@ namespace WebApplication1.Models.Framework_Models
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Picture> Pictures {  get; set; }
+
         public DbSet<Reservation> Reservations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder mb)

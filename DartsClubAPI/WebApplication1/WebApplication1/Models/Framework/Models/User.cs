@@ -17,6 +17,8 @@
 
         public List<Reservation> Reservations { get; set; }
 
+        public Picture Picture { get; set; }
+
         public User() { }
 
         public User(Guid iD, string name, string email, string password, bool ismoderator)

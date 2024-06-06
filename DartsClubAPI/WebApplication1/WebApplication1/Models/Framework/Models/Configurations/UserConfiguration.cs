@@ -9,6 +9,7 @@ namespace WebApplication1.Models.Framework.Models.Configurations
         {
             builder.HasKey(x => x.ID);
             builder.HasMany(x => x.Reservations).WithOne(r => r.User).HasForeignKey(r => r.UserId);
+            builder.HasOne(x => x.Picture);
         }
     }
 }
