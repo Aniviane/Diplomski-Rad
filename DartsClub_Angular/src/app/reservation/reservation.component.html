@@ -1,0 +1,23 @@
+<p>reservation works!</p>
+<div class="main">
+<mat-form-field>
+    <mat-label>Choose a date</mat-label>
+    <input matInput [matDatepicker]="picker"
+    (dateChange)="addEvent($event)">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+
+<mat-chip-listbox selectable multiple aria-label="select a shirt size" class="pill-group">
+    
+    <mat-chip-option *ngFor="let hour of Hours; index as i" class="pill" (selectionChange)="chipSelected(hour)"> {{hour}}:00-{{hour + 1}}:00 </mat-chip-option>
+    
+</mat-chip-listbox>
+
+
+<button  (click)="makeReservation()"  mat-flat-button color="primary">Create Reservation</button>
+</div>
+
+  

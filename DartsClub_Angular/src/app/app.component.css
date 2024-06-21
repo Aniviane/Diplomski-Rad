@@ -1,0 +1,19 @@
+mat-card-title {
+    text-align: center;
+    margin: auto;
+    
+}
+
+mat-card-content {
+    text-align: center;
+    margin: auto;
+}
+mat-card-actions{
+    display: flex;
+    margin: auto;
+    align-items: center;
+}
+mat-card {
+    
+    border-radius: 2.75rem;
+}

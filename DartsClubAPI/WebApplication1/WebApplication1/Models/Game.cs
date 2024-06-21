@@ -5,13 +5,17 @@ namespace WebApplication1.Models
 {
     public class Game
     {
-        public Game(DateTime date, int aScore, int bScore, string gameType, List<Guid> playerIds, int numOfRounds)
+     
+        public Game() { }
+
+        public Game(DateTime date, List<int> gameScores, string gameType, List<Guid> playerIds, List<int> tripleTwentys, List<int> bullsEyes, List<int> numOfRounds)
         {
             Date = date;
-            AScore = aScore;
-            BScore = bScore;
+            GameScores = gameScores;
             GameType = gameType;
             PlayerIds = playerIds;
+            TripleTwentys = tripleTwentys;
+            BullsEyes = bullsEyes;
             NumOfRounds = numOfRounds;
         }
 
@@ -22,11 +26,9 @@ namespace WebApplication1.Models
         [BsonElement("Date")]
         public DateTime Date { get; set; } = DateTime.Now!;
 
-        [BsonElement("AScore")]
-        public int AScore { get; set; }
 
-        [BsonElement("BScore")]
-        public int BScore { get; set; }
+        [BsonElement("GameScores")]
+        public List<int> GameScores { get; set; }
 
 
         [BsonElement("GameType")]
@@ -35,7 +37,17 @@ namespace WebApplication1.Models
         [BsonElement("PlayerIds")]
         public List<Guid> PlayerIds { get; set; }
 
+
+        [BsonElement("TripleTwentys")]
+        public List<int> TripleTwentys { get; set; }
+
+
+        [BsonElement("BullsEyes")]
+        public List<int> BullsEyes { get; set; }
+
+
         [BsonElement("NumOfRounds")]
-        public int NumOfRounds {  get; set; }
+        public List<int> NumOfRounds { get; set; }
+       
     }
 }

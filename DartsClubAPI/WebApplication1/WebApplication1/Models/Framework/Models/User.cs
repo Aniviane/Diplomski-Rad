@@ -1,4 +1,6 @@
-﻿namespace WebApplication1.Models.Framework.Models
+﻿using WebApplication1.Models.Framework.Models.DTOs;
+
+namespace WebApplication1.Models.Framework.Models
 {
     public class User
     {
@@ -21,7 +23,17 @@
 
         public User() { }
 
-        public User(Guid iD, string name, string email, string password, bool ismoderator)
+        public User(UserCreateDTO userCreateDTO)
+        {
+            ID = null;
+            Name = userCreateDTO.Name;
+            Email = userCreateDTO.Email;
+            isModerator = userCreateDTO.isModerator;
+            Password = userCreateDTO.Password;
+            Reservations = new List<Reservation>();
+        }
+
+        public User(string name, string email, string password, bool ismoderator)
         {
             ID = null;
             Name = name;
@@ -29,6 +41,7 @@
             Password = password;
             isModerator = ismoderator;
             Reservations = new List<Reservation>();
+            
             
         }
     }

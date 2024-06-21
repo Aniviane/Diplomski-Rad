@@ -1,1 +1,37 @@
 <p>blog works!</p>
+
+<div class="main">
+<h3> Become part of our bloging community!</h3>
+
+<button    mat-flat-button color="primary" >Post your very own blog!</button>
+<div class="pill-group" *ngIf="UserApprovedBlogs.length > 0">
+<p>Your approved posts</p>
+
+</div>
+<div class="pill-group"  *ngIf="UserApprovedBlogs.length > 0">
+    <p>Your not approved posts</p>
+    </div>
+    
+</div>
+
+<div class="pill-group" >
+    <p>Community blogs</p>
+    
+        <mat-card class="pill"  *ngFor="let blog of Blogs">
+            <mat-card-title>{{blog.short_Description}}</mat-card-title>
+          
+         <mat-divider></mat-divider>
+         <mat-chip-set aria-label="Categories">
+            <mat-chip *ngFor="let category of blog.categories.split(',')">{{category}}</mat-chip>
+            
+          </mat-chip-set>
+
+         <mat-divider></mat-divider>
+
+        <mat-card-content>{{blog.blog_Content}}</mat-card-content>
+          
+         
+        </mat-card>
+      
+        
+</div>

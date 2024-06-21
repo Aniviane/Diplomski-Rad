@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Controllers.Services;
 using WebApplication1.Models;
+using WebApplication1.Models.DTO_s;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,6 +26,18 @@ namespace WebApplication1.Controllers
         public async Task<IEnumerable<BlogPost>> Get()
         {
             return await _elasticService.GetAsync();
+        }
+
+        [HttpGet("Approved")]
+        public async Task<IEnumerable<BlogPost>> GetApproved()
+        {
+            return await _elasticService.FindApproved();
+        }
+
+        [HttpGet("NotApproved")]
+        public async Task<IEnumerable<BlogPost>> GetNotApproved()
+        {
+            return await _elasticService.FindNotApproved();
         }
 
         // GET api/<BlogController>/5
@@ -55,7 +68,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPut("Approve")]
-        public async Task<bool> ApproveBlog(string id)
+        public async Task<bool> ApproveBlog(AprooveDTO id)
         {
             return await _elasticService.Approve(id);
         }

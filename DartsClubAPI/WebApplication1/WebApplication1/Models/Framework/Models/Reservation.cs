@@ -14,9 +14,9 @@
 
         public Guid UserId { get; set; }
 
-        public Reservation(Guid? iD, User user, DateTime day, int hour, Guid userId)
+        public Reservation( User user, DateTime day, int hour, Guid userId)
         {
-            ID = iD;
+            ID = null;
             Day = day;
             Hour = hour;
             User = user;

@@ -1,0 +1,48 @@
+<div class="main">
+<p>Please Login using your credentials</p>
+
+<form class="pill-group" [formGroup]="LoginForm"> 
+<mat-form-field class="pill">
+    
+    <mat-label>Username</mat-label>
+    <input matInput formControlName="Username">
+    
+  </mat-form-field>
+
+  <mat-form-field class="pill">
+    <mat-label>Password</mat-label>
+    <input type="password" formControlName="Password" matInput>
+  </mat-form-field>
+
+  
+  <button [disabled]="LoginForm.invalid" (click)="submitLogin()"  mat-flat-button color="primary" >Login</button>
+
+
+</form>
+</div>
+<div class="main"> <p>Or create a new Account below</p>
+  <form class="pill-group" [formGroup]="RegisterForm"> 
+    <mat-form-field class="pill">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="Username">
+      </mat-form-field>
+    
+      <mat-form-field class="pill">
+        <mat-label>Password</mat-label>
+        <input type="password" formControlName="Password" matInput>
+      </mat-form-field>
+    
+      <mat-form-field class="pill">
+        <mat-label>Email</mat-label>
+        <input type="email" formControlName="Email" matInput>
+      </mat-form-field>
+      
+      <button [disabled]="RegisterForm.invalid" (click)="submitRegister()"  mat-flat-button color="primary" >Register</button>
+    
+    
+    </form>
+
+</div>
+<div class="main">
+  <button  (click)="printUser()"  mat-flat-button color="primary" >print user</button>
+</div>

@@ -7,12 +7,12 @@ namespace WebApplication1.Models
     {
         
 
-        public BlogPost(string id, string news_Site,string categories, string short_Description, string userId, bool isApproved, string blog_Content, int word_Count)
+        public BlogPost(string id, DateTime timestamp, string categories, string short_Description, string userId, bool isApproved, string blog_Content, int word_Count)
         {
             Id = id;
-            News_Site = news_Site;
             Short_Description = short_Description;
             UserId = userId;
+            Timestamp = timestamp;
             IsApproved = isApproved;
             Blog_Content = blog_Content;
             Word_Count = word_Count;
@@ -21,9 +21,9 @@ namespace WebApplication1.Models
 
         [PropertyName("_id")]
         public string Id { get; set; }
-        public string News_Site { get; set; }
         public string Short_Description { get; set; }
 
+        public DateTime Timestamp { get; set; }
         public string Categories { get; set; }
         public string UserId { get; set; }
 

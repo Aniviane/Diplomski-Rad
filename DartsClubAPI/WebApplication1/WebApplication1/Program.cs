@@ -16,7 +16,7 @@ builder.Services.AddControllers();
 
 // Add services to the container.
 builder.Services.Configure<MongoConfig>(
-    builder.Configuration.GetSection("BookStoreDatabase"));
+    builder.Configuration.GetSection("DartStoreDatabase"));
 builder.Services.Configure<ElasticsearchSettings>(
     builder.Configuration.GetSection("ElasticSettings"));
 
@@ -36,7 +36,7 @@ builder.Services.AddSingleton<IElasticClient>(sp =>
     var consettings = new Nest.ConnectionSettings(uri).PrettyJson()
     .CertificateFingerprint("05a72f7b0e37e9f19ff30f74a9c83cb906ad74b2c91ecce08777776198702735")
     .BasicAuthentication("elastic", "Z09lH*X93-HBjo-tZ-xv")
-    .DefaultIndex("blog_posts2")
+    .DefaultIndex("blog_posts4")
     .DefaultMappingFor<BlogPost>(m => m.IdProperty(b => b.Id))
     .DefaultFieldNameInferrer(p => p)
     .EnableApiVersioningHeader();

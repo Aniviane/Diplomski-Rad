@@ -16,6 +16,8 @@ using WebApplication1.Models.DTO_s;
 using WebApplication1.Models.Framework.Models;
 using WebApplication1.Models.Framework_Models;
 using Nest;
+using WebApplication1.Models.Framework.Models.DTOs;
+using BCrypt.Net;
 
 
 
@@ -39,9 +41,15 @@ namespace WebApplication1.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
-            return await _context.Users.Include(x => x.Picture).ToListAsync();
+            var users = await _context.Users.Include(x => x.Reservations).Include(x => x.Picture).ToListAsync();
+            var returningUsers = new List<UserDTO>();
+            foreach(var user in users)
+            {
+                returningUsers.Add(new UserDTO(user));
+            }
+            return returningUsers;
         }
 
 
@@ -185,16 +193,19 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost("Login")]
-        public  ActionResult<User> LoginUser(string username, string password)
+        public  ActionResult<User> LoginUser([FromBody] LoginDTO loginDTO)
         {
-            var user =  _context.Users.Where(x =>  x.Name == username && x.Password == password ).FirstOrDefault();
+
+
+            var user =  _context.Users.Where(x =>  x.Name == loginDTO.Username).FirstOrDefault();
 
             if (user == null || user.ID == null) return BadRequest();
-            
 
 
+            if (!BCrypt.Net.BCrypt.Verify(loginDTO.Password, user.Password)) return BadRequest();
 
-                List<Claim> claims =
+
+            List<Claim> claims =
                 [
                     new Claim(ClaimTypes.Role, user.isModerator.ToString()),
                     new Claim(ClaimTypes.SerialNumber, user.ID.ToString()),
@@ -273,12 +284,19 @@ namespace WebApplication1.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> PostUser(UserCreateDTO user)
         {
-            _context.Users.Add(user);
+
+            var User = new User(user);
+
+            var passHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            User.Password = passHash;
+
+
+            _context.Users.Add(User);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.ID }, user);
+            return CreatedAtAction("GetUser", new { id = User.ID }, User);
         }
 
         // DELETE: api/Users/5

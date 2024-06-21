@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApplication1.Models.DTO_s;
 using WebApplication1.Models.Framework.Models;
 using WebApplication1.Models.Framework.Models.DTOs;
 using WebApplication1.Models.Framework_Models;
@@ -100,17 +101,33 @@ namespace WebApplication1.Controllers
         // POST: api/Reservations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ReservationDTO>> PostReservation(ReservationDTO reservation)
+        public async Task<ActionResult<List<ReservationDTO>>> PostReservation([FromBody] CreateReservationsDTO reservation)
         {
             var user = _context.Users.Find(reservation.UserId);
             if (user == null) return BadRequest();
-            var day = new DateTime(reservation.Day.Year, reservation.Day.Month, reservation.Day.Day);
-            var res = new Reservation(reservation.ID, user, day, reservation.Hour, reservation.UserId);
 
-            _context.Reservations.Add(res);
+            var createdReservations = new List<ReservationDTO>();
+
+            foreach(var hour in reservation.Hours)
+            {
+
+                var day = new DateTime(reservation.Day.Year, reservation.Day.Month, reservation.Day.Day).AddDays(1);
+                var res = new Reservation(user, day, hour, reservation.UserId);
+
+                if (!_context.Reservations.Any(r => r.Day == reservation.Day && r.Hour == hour))
+                {
+                    createdReservations.Add(new ReservationDTO(res));
+                    _context.Reservations.Add(res);
+                }
+
+
+
+            }
+
+
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReservation", new { id = res.ID }, res);
+            return createdReservations;
         }
 
         // DELETE: api/Reservations/5
