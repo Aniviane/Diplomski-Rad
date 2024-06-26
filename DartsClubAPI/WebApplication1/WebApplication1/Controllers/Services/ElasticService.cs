@@ -129,9 +129,11 @@ namespace WebApplication1.Controllers.Services
         }
 
 
-        public async Task DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(string id)
         {
             var response = await _elastic.DeleteAsync<BlogPost>(id);
+            if (response.IsValid) return true;
+            return false;
         }
 
        public async Task<List<BlogPost>> SearchContent(string content)
@@ -233,6 +235,28 @@ namespace WebApplication1.Controllers.Services
             return null;
         }
 
+
+        public async Task<List<BlogPost>> GetMyBlogs(string id)
+        {
+            var response = await _elastic.SearchAsync<BlogPost>(s => s
+           .Query(q => q
+           .Match(m => m
+           .Field(f => f.UserId)
+           .Query(id))));
+
+            if (response.IsValid)
+            {
+                var rets = response.Hits.Select(hit =>
+                {
+                    var blog = hit.Source;
+                    blog.Id = hit.Id;
+                    return blog;
+                }).ToList();
+                return rets;
+            }
+
+            return null;
+        }
 
         public async Task UpdateBlog(BlogPost bp)
         {

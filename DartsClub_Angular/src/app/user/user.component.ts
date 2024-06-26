@@ -19,6 +19,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class UserComponent {
 
   
+  guestId  = "a0a0aa0d-a00a-0000-0a0a-00aa0a000a00"
+
   User : UserDTO | null = null
 
   constructor(private userService:UserService, private router:Router) {}

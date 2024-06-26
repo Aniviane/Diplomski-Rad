@@ -1,0 +1,37 @@
+<p>create-blog works!</p>
+<form class="pill-group-dart" [formGroup]="PostForm">
+<mat-form-field class="pill">
+    <mat-label>Blog Title</mat-label>
+    <input matInput formControlName="Title">
+  </mat-form-field>
+ 
+  <mat-form-field class="pill">
+    <mat-label>Post Categories</mat-label>
+    <mat-chip-grid #chipGrid aria-label="Enter categories" [formControl]="formControl">
+      @for (keyword of keywords(); track keyword) {
+        <mat-chip-row (removed)="removeKeyword(keyword)">
+          {{keyword}}
+          <button matChipRemove aria-label="'remove ' + keyword">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
+    </mat-chip-grid>
+    <input
+      placeholder="New category..."
+      [matChipInputFor]="chipGrid"
+      (matChipInputTokenEnd)="add($event)"
+    />
+    
+  </mat-form-field>
+
+
+  <mat-form-field class="pill">
+    <mat-label>Blog Content</mat-label>
+    <textarea matInput formControlName="Content"></textarea>
+  </mat-form-field>
+
+  
+  <button [disabled]="PostForm.invalid" (click)="submitPost()"  mat-flat-button color="primary" >Register</button>
+
+</form>

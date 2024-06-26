@@ -34,6 +34,12 @@ namespace WebApplication1.Controllers
             return await _elasticService.FindApproved();
         }
 
+        [HttpGet("MyBlogs/{id}")]
+        public async Task<IEnumerable<BlogPost>> GetMyBlogs(string id)
+        {
+            return await _elasticService.GetMyBlogs(id);
+        }
+
         [HttpGet("NotApproved")]
         public async Task<IEnumerable<BlogPost>> GetNotApproved()
         {
@@ -82,9 +88,9 @@ namespace WebApplication1.Controllers
 
         // DELETE api/<BlogController>/5
         [HttpDelete("{id}")]
-        public async void Delete(string id)
+        public async Task<bool> Delete(string id)
         {
-            await _elasticService.DeleteAsync(id);
+            return await _elasticService.DeleteAsync(id);
         }
 
 

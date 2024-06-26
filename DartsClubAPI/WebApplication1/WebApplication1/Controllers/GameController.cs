@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using WebApplication1.Controllers.Services;
 using WebApplication1.Models;
+using WebApplication1.Models.DTO_s;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,8 +30,14 @@ namespace WebApplication1.Controllers
             return await _mongoService.GetAsync(id);
         }
 
+        [HttpGet("Averages/{id}")]
+        public async Task<UserAveragesDTO> GetMyAverages(Guid id)
+        {
+            return await _mongoService.GetAverages(id);
+        }
+
         [HttpGet("PlayerId/{id}")]
-        public async Task<List<Game>> GetGamesById(Guid id)
+        public async Task<List<PersonalGameDTO>> GetGamesById(Guid id)
         {
             return await _mongoService.FindGamesById(id);
         }

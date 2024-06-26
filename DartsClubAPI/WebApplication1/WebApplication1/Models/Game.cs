@@ -8,7 +8,7 @@ namespace WebApplication1.Models
      
         public Game() { }
 
-        public Game(DateTime date, List<int> gameScores, string gameType, List<Guid> playerIds, List<int> tripleTwentys, List<int> bullsEyes, List<int> numOfRounds)
+        public Game(DateTime date, List<int> gameScores, string gameType, List<Guid> playerIds, List<int> tripleTwentys, List<int> bullsEyes, int numOfRounds)
         {
             Date = date;
             GameScores = gameScores;
@@ -47,7 +47,7 @@ namespace WebApplication1.Models
 
 
         [BsonElement("NumOfRounds")]
-        public List<int> NumOfRounds { get; set; }
+        public int NumOfRounds { get; set; }
        
     }
 }
