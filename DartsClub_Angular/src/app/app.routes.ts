@@ -5,6 +5,7 @@ import { GameComponent } from './game/game.component';
 import { LogRegComponent } from './log-reg/log-reg.component';
 import { ReservationComponent } from './reservation/reservation.component';
 import { CreateBlogComponent } from './create-blog/create-blog.component';
+import { PostGameComponent } from './post-game/post-game.component';
 
 export const routes: Routes = [
     {path : "User", component: UserComponent},
@@ -12,5 +13,6 @@ export const routes: Routes = [
     {path : "Games", component: GameComponent},
     {path : "Login", component: LogRegComponent},
     {path : "Reservation", component: ReservationComponent},
+    {path : "AddGame", component: PostGameComponent},
     {path : "Post", component: CreateBlogComponent}
 ];

@@ -44,10 +44,10 @@ namespace WebApplication1.Controllers
 
         // POST api/<GameController>
         [HttpPost]
-        public async void Post([FromBody] Game value)
+        public async Task<bool> Post([FromBody] Game value)
         {
             value.GameId = ObjectId.GenerateNewId().ToString();
-            await _mongoService.CreateAsync(value);
+            return await _mongoService.CreateAsync(value);
         }
 
         // PUT api/<GameController>/5

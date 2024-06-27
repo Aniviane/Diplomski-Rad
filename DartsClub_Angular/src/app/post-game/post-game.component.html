@@ -1,0 +1,86 @@
+<p>post-game works!</p>
+<div class="main">
+    <div class="pill-group"> 
+        
+
+        <form>
+
+            <div class="pill">
+
+                <mat-form-field class="pill">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput [matDatepicker]="picker"
+                    (dateChange)="addEvent($event)">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            
+            
+              <mat-form-field class="pill">
+                <mat-label>Select Game Type</mat-label>
+                <mat-select (selectionChange)="setPlayerCount($event)">
+                    <mat-option value="1v1">1v1</mat-option>
+                    <mat-option value="FFA3">3 Player FFA</mat-option>
+                    <mat-option value="FFA4">4 Player FFA</mat-option>
+                    <mat-option value="2v2">2v2</mat-option>
+                </mat-select>
+              </mat-form-field>
+            
+              <mat-form-field class="pill">
+                <mat-label>Number of Rounds</mat-label>
+                <input type="number" matInput name="rounds" [(ngModel)]="numberOfRounds">
+              </mat-form-field>
+
+            </div>
+
+         </form>
+
+    <div class="pill-group">
+        <mat-card class="pill" *ngFor="let game of personalGames; let i = index">
+            <mat-card-title>Player {{i + 1}}</mat-card-title>
+          
+        
+         <mat-form-field>
+            <mat-label>Select Player</mat-label>
+            <mat-select [(ngModel)]="game.userId">
+              <mat-option value="1v1" *ngFor="let username of usernames" value="{{username.id}}" >{{username.name}}</mat-option>
+              
+            </mat-select>
+          </mat-form-field>
+    
+          <mat-form-field>
+            <mat-form-field >
+                <mat-label>Points</mat-label>
+                <input type="number" matInput [(ngModel)]="game.score">
+              </mat-form-field>
+           
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-form-field >
+                <mat-label>Triple Twenties</mat-label>
+                <input type="number" matInput [(ngModel)]="game.tripleTwenties">
+              </mat-form-field>
+           
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-form-field>
+                <mat-label>Bulls Eyes</mat-label>
+                <input type="number" matInput [(ngModel)]="game.bullsEyes">
+              </mat-form-field>
+           
+          </mat-form-field>
+
+        </mat-card>
+    
+    </div>
+  
+
+    
+    
+</div>
+
+<button (click)="submitGame()"  mat-flat-button color="primary" >Show Games</button>
+</div>

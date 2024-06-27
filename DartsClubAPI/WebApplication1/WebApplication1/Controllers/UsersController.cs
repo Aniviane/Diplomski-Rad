@@ -45,9 +45,21 @@ namespace WebApplication1.Controllers
         {
             var users = await _context.Users.Include(x => x.Reservations).Include(x => x.Picture).ToListAsync();
             var returningUsers = new List<UserDTO>();
-            foreach(var user in users)
+            foreach (var user in users)
             {
                 returningUsers.Add(new UserDTO(user));
+            }
+            return returningUsers;
+        }
+
+        [HttpGet("Usernames")]
+        public async Task<ActionResult<IEnumerable<UsernameDTO>>> GetUsernames()
+        {
+            var users = await _context.Users.ToListAsync();
+            var returningUsers = new List<UsernameDTO>();
+            foreach (var user in users)
+            {
+                returningUsers.Add(new UsernameDTO(user));
             }
             return returningUsers;
         }

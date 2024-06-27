@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { LoginDTO } from './models/LoginDTO';
 import { UserCreateDTO } from './models/UserCreateDTO';
 import { UserDTO } from './models/UserDTO';
+import { UsernamesDTO } from './models/UsernamesDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,12 @@ export class UserService {
   private UserSubject = new BehaviorSubject<UserDTO | null>(null);
 
   constructor(private http:HttpClient) { }
+
+  getUsernames() : Observable<UsernamesDTO[]> {
+    
+    return this.http.get<UsernamesDTO[]>(this.BaseUrl + "api/Users/Usernames")
+  }
+
 
   setUser(user : any): void {
     this.UserSubject.next(user)

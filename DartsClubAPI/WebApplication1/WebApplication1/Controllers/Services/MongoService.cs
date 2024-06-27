@@ -29,9 +29,18 @@ namespace WebApplication1.Controllers.Services
             await _gameCollection.Find(x => x.GameId == id).FirstOrDefaultAsync();
 
 
-        public async Task CreateAsync(Game newGame) =>
-      await _gameCollection.InsertOneAsync(newGame);
-
+        public async Task<bool> CreateAsync(Game newGame)
+        {
+            try
+            {
+                await _gameCollection.InsertOneAsync(newGame);
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
         public async Task UpdateAsync(string id, Game updatedGame) =>
             await _gameCollection.ReplaceOneAsync(x => x.GameId == id, updatedGame);
 
