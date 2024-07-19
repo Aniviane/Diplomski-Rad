@@ -7,7 +7,7 @@ export class UserDTO {
     password : string
     email : string
     isModerator : boolean
-    reservation : ReservationDTO
+    reservations : ReservationDTO[]
     picture : PictureDTO
     constructor() {
         this.id = ""
@@ -15,7 +15,7 @@ export class UserDTO {
         this.password = ""
         this.email = ""
         this.isModerator = false
-        this.reservation = new ReservationDTO
+        this.reservations = []
         this.picture = new PictureDTO
     }
 }

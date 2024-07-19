@@ -15,6 +15,7 @@ import { UserService } from '../user.service';
 import { GameService } from '../game.service';
 import { UsernamesDTO } from '../models/UsernamesDTO';
 import { FullGameDTO } from '../models/FullGameDTO';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-post-game',
   standalone: true,
@@ -25,7 +26,7 @@ import { FullGameDTO } from '../models/FullGameDTO';
 })
 export class PostGameComponent {
 
-  constructor(private userService:UserService, private gameService:GameService) {}
+  constructor(private userService:UserService,private _snackBar :MatSnackBar, private gameService:GameService) {}
 
 
   ngOnInit() {
@@ -110,13 +111,16 @@ export class PostGameComponent {
     })
 
     console.log(fullGame)
-    this.gameService.postGame(fullGame).subscribe(ret =>
+    this.gameService.postGame(fullGame).subscribe(ret => {
+      if(!ret) return;
+      this._snackBar.open('Game Created Successfully!', 'Close', {
+        duration: 3000
+      })
       console.log(ret)
+    }
     )
 
   }
 
-  displayGames() {
-    console.log(this.personalGames)
-  }
+  
 }

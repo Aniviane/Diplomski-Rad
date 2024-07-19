@@ -1,88 +1,103 @@
-<p>blog works!</p>
 
 <div class="main">
-<h3> Become part of our bloging community!</h3>
 
-<button    mat-flat-button color="primary" routerLink="Post" >Post your very own blog!</button>
-
-
-<div class="pill-group" *ngIf="User?.isModerator">
+<mat-tab-group>
+  <mat-tab label="Not Approved Blogs" *ngIf="User?.isModerator">
+    <div class="pill-group" *ngIf="User?.isModerator">
  
-    <mat-card class="pill"  *ngFor="let blog of NotApprovedBlogs">
-        <mat-card-title>{{blog.short_Description}}</mat-card-title>
-      
-     <mat-divider></mat-divider>
-     <mat-chip-set aria-label="Categories">
-        <mat-chip *ngFor="let category of blog.categories.split(',')">{{category}}</mat-chip>
+      <mat-card class="pill"  *ngFor="let blog of NotApprovedBlogs">
+          <mat-card-title>{{blog.short_Description}}</mat-card-title>
         
-      </mat-chip-set>
+       <mat-divider></mat-divider>
+       <mat-chip-set aria-label="Categories">
+          <mat-chip *ngFor="let category of blog.categories.split(',')">{{category}}</mat-chip>
+          
+        </mat-chip-set>
+  
+       <mat-divider></mat-divider>
+  
+      <mat-card-content><p>{{blog.blog_Content}} </p></mat-card-content>
+        
+      <mat-card-actions>
+          <button mat-button (click)="approveBlog(blog.id)">Approve Blog</button>
+          <button mat-button (click)="deleteBlog(blog.id)" >Delete Blog</button>
+        </mat-card-actions>
+  
+      </mat-card>
+  
+  
+  </div>
+  
+  
+  </mat-tab>
+  <mat-tab label="Your Approved posts" *ngIf="UserApprovedBlogs.length > 0"> 
 
-     <mat-divider></mat-divider>
-
-    <mat-card-content>{{blog.blog_Content}}</mat-card-content>
+    <div class="pill-group"  >
       
-    <mat-card-actions>
-        <button mat-button (click)="approveBlog(blog.id)">Approve Blog</button>
+      <p>If you have posted a blog and you don't see it yet, please be patient while our moderator team approves it.</p>
+      
+      <mat-card class="pill"  *ngFor="let blog of UserApprovedBlogs">
+          <mat-card-title>{{blog.short_Description}}</mat-card-title>
+        
+       <mat-divider></mat-divider>
+       <mat-chip-set aria-label="Categories">
+          <mat-chip *ngFor="let category of blog.categories.split(',')">{{category}}</mat-chip>
+          
+        </mat-chip-set>
+    
+       <mat-divider></mat-divider>
+    
+      <mat-card-content><p>{{blog.blog_Content}} </p></mat-card-content>
+        
+      <mat-card-actions>
+        <button mat-button (click)="changeBlog(blog.id)">Change Blog</button>
         <button mat-button (click)="deleteBlog(blog.id)" >Delete Blog</button>
-      </mat-card-actions>
-
-    </mat-card>
-
-
-</div>
-
-
-
-<div class="pill-group"  *ngIf="UserNotApprovedBlogs.length > 0">
-    <p>Your not approved posts</p>
-    <p>Please be patient while our moderators approve your posts!</p>
+        </mat-card-actions>
     
-    <mat-card class="pill"  *ngFor="let blog of Blogs">
-        <mat-card-title>{{blog.short_Description}}</mat-card-title>
-      
-     <mat-divider></mat-divider>
-     <mat-chip-set aria-label="Categories">
-        <mat-chip *ngFor="let category of blog.categories.split(',')">{{category}}</mat-chip>
-        
-      </mat-chip-set>
-
-     <mat-divider></mat-divider>
-
-    <mat-card-content>{{blog.blog_Content}}</mat-card-content>
-      
-    <mat-card-actions>
-        <button mat-button routerLink="Login" *ngIf="!User">Login or Create an Account</button>
-        <button mat-button routerLink="User" *ngIf="User">Check out your Account</button>
-        <button mat-button routerLink="Games" *ngIf="User">Take a look at your Games</button>
-      </mat-card-actions>
-
-    </mat-card>
-
-
-</div>
-
-</div>
-
-
-
-<div class="pill-group" >
-    <p>Community blogs</p>
+      </mat-card>
     
-        <mat-card class="pill"  *ngFor="let blog of Blogs">
-            <mat-card-title>{{blog.short_Description}}</mat-card-title>
-          
-         <mat-divider></mat-divider>
-         <mat-chip-set aria-label="Categories">
-            <mat-chip *ngFor="let category of blog.categories.split(',')">{{category}}</mat-chip>
+    
+    </div>
+
+  </mat-tab>
+  <mat-tab label="Community blogs"> 
+  
+    <div class="pill-group" >
+  
+      <div class="pill-group-dart">
+        <mat-form-field class="pill-">
+          <mat-label>Search Blogs by Title</mat-label>
+          <input matInput name="title" [(ngModel)]="titleField" (change)="onChange()">
+        </mat-form-field>
+  
+        <mat-form-field class="pill-">
+          <mat-label>Search Blogs by Content</mat-label>
+          <input matInput name="content" [(ngModel)]="contentField" (change)="onChange()">
+        </mat-form-field>
+      </div>
+      
+          <mat-card class="pill"  *ngFor="let blog of SearchedBlogs">
+              <mat-card-title>{{blog.short_Description}}</mat-card-title>
             
-          </mat-chip-set>
-
-         <mat-divider></mat-divider>
-
-        <mat-card-content>{{blog.blog_Content}}</mat-card-content>
-          
-         
-        </mat-card>
-      
+           <mat-divider></mat-divider>
+           <mat-chip-set aria-label="Categories">
+              <mat-chip *ngFor="let category of blog.categories.split(',')">{{category}}</mat-chip>
+              
+            </mat-chip-set>
+  
+           <mat-divider></mat-divider>
+  
+          <mat-card-content> <p> {{blog.blog_Content}} </p> </mat-card-content>
+            
+           
+          </mat-card>
         
+          
+  </div>
+  
+  </mat-tab>
+</mat-tab-group>
 </div>
+
+
+

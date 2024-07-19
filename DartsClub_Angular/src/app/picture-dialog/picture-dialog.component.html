@@ -1,0 +1,16 @@
+
+
+<mat-dialog-content>
+  
+    
+ 
+    <div class="mb-3">
+      <label for="formFile" class="form-label">Please select your picture</label>
+      <input class="form-control" (change)="onChange($event)" type="file" id="formFile">
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="picture()" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

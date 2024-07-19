@@ -11,6 +11,7 @@ import { UserDTO } from '../models/UserDTO';
 import { Router } from '@angular/router';
 import { Blog } from '../models/Blog';
 import { BlogService } from '../blog.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-blog',
@@ -22,9 +23,9 @@ import { BlogService } from '../blog.service';
 export class CreateBlogComponent {
 
   readonly keywords  = signal<string[]>([]);
-  readonly formControl = new FormControl(['angular']);
+  readonly formControl = new FormControl(['']);
 
-  constructor(private userService:UserService, private blogService:BlogService, private router:Router) {}
+  constructor(private userService:UserService, private blogService:BlogService,private _snackBar: MatSnackBar, private router:Router) {}
 
   ngOnInit() : void {
    this.userService.getCurrentUser().subscribe(user => {
@@ -71,7 +72,19 @@ export class CreateBlogComponent {
     blog.userId = this.User?.id!
     blog.word_Count = blog.blog_Content.split(' ').length
 
-    this.blogService.postBlog(blog).subscribe(ret => console.log(ret))
+    this.blogService.postBlog(blog).subscribe(ret => {
+      if(!ret) {
+        this._snackBar.open("There seems to have been an error. Please try again later.", 'Close', {
+          duration: 3000
+        })
+        return;
+      }
+
+      this._snackBar.open("Your blog has been posted successfully!", 'Close', {
+        duration: 3000
+      })
+
+    })
   }
 
 

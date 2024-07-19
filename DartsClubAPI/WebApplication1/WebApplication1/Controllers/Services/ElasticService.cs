@@ -3,7 +3,9 @@ using Humanizer;
 using Microsoft.Extensions.Caching.Distributed;
 using Nest;
 using Newtonsoft.Json;
+using NuGet.Protocol.Plugins;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection.Metadata;
 using System.Security.Claims;
 using WebApplication1.Models;
 using WebApplication1.Models.DTO_s;
@@ -157,6 +159,55 @@ namespace WebApplication1.Controllers.Services
             return null;
         }
 
+        public async Task<List<BlogPost>> SearchTitle(string title)
+        {
+            var response = await _elastic.SearchAsync<BlogPost>(s => s
+            .Query(q => q
+            .Match(m => m
+            .Field(f => f.Short_Description)
+            .Query(title))));
+
+            if (response.IsValid)
+            {
+                var rets = response.Hits.Select(hit =>
+                {
+                    var blog = hit.Source;
+                    blog.Id = hit.Id;
+                    return blog;
+                }).ToList();
+                return rets;
+            }
+            return null;
+        }
+
+        public async Task<List<BlogPost>> SearchBlogs(SearchQueryDTO query)
+        {
+            var response = await _elastic.SearchAsync<BlogPost>(blog => blog
+            .Query(q => q
+            .Bool(b => b
+            .Must(
+                mu => mu.Match(m => m.Field(b => b.Blog_Content).Query(query.Content)),
+                mu => mu.Match(m => m.Field(b => b.Short_Description).Query(query.Title))
+                ))));
+
+            if (response.IsValid)
+            {
+                var rets = response.Hits.Select(hit =>
+                {
+                    var blog = hit.Source;
+                    blog.Id = hit.Id;
+                    
+                    return blog;
+                    
+                }).ToList();
+
+                
+
+                return rets.Where(blog => blog.IsApproved).ToList();
+            }
+            return null;
+        }
+
         public async Task<List<BlogPost>> FindApproved()
         {
             var response = await _elastic.SearchAsync<BlogPost>(s => s
@@ -258,9 +309,27 @@ namespace WebApplication1.Controllers.Services
             return null;
         }
 
-        public async Task UpdateBlog(BlogPost bp)
+        public async Task<bool> UpdateBlog(BlogPost bp)
         {
-            await _elastic.IndexDocumentAsync(bp);
+            var blogRequest = await _elastic.GetAsync<BlogPost>(bp.Id);
+
+            if (!blogRequest.IsValid)
+                return false;
+
+            var blog = blogRequest.Source;
+
+
+
+            blog.Short_Description = bp.Short_Description;
+            blog.Blog_Content = bp.Blog_Content;
+            blog.Categories = bp.Categories;
+
+
+            var request = await _elastic.UpdateAsync<BlogPost>(blogRequest.Id, bp => bp
+            .Doc(blog)
+            );
+
+            return request.IsValid;
 
         }
     }

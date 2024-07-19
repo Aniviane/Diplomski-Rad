@@ -1,4 +1,6 @@
-﻿namespace WebApplication1.Models.DTO_s
+﻿using MongoDB.Bson;
+
+namespace WebApplication1.Models.DTO_s
 {
     public class PersonalGameDTO
     {
@@ -12,6 +14,10 @@
             Rounds = rounds;
             GameType = gameType;
         }
+
+        public DateTime Date { get; set; }
+
+        public ObjectId Id { get; set; }
 
         public string GameId { get; set; }
 
@@ -30,3 +36,4 @@
 
     }
 }
+

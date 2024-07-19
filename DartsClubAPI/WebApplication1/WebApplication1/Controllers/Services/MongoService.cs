@@ -1,4 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using WebApplication1.Models;
 using WebApplication1.Models.DTO_s;
@@ -12,11 +15,15 @@ namespace WebApplication1.Controllers.Services
         public MongoService(
        IOptions<MongoConfig> settings)
         {
+
+
             var mongoClient = new MongoClient(
                 settings.Value.ConnectionString);
 
             var mongoDatabase = mongoClient.GetDatabase(
                 settings.Value.DatabaseName);
+
+
 
             _gameCollection = mongoDatabase.GetCollection<Game>(
                 settings.Value.CollectionName);
@@ -53,40 +60,75 @@ namespace WebApplication1.Controllers.Services
 
             var games = await _gameCollection.Find(x => x.PlayerIds.Contains(id)).ToListAsync();
 
-            if (games == null || games.Count == 0)
-                return new UserAveragesDTO(0, 0, 0, 0, 0);
+            var pipeline = new BsonDocument[]
+                {
+                    
+                    // Stage 1: Match documents where the playerIds array contains the specified playerId
+                    new BsonDocument("$match",
+                        new BsonDocument("PlayerIds", id)
+                    ),
+
+                    // Stage 2: Find index of playerId in PlayerIds array and retrieve GameScores and BullsEyes
+                    new BsonDocument("$project",
+                        new BsonDocument
+                        {
+                            {"PlayersId", id },
+                           
+                            { "GameScore",
+                                new BsonDocument("$arrayElemAt", new BsonArray { "$GameScores",
+                                    new BsonDocument("$indexOfArray", new BsonArray { "$PlayerIds", id}) })
+                            },
+                            { "BullsEye",
+                                new BsonDocument("$arrayElemAt", new BsonArray { "$BullsEyes",
+                                    new BsonDocument("$indexOfArray", new BsonArray { "$PlayerIds", id }) })
+                            },
+                            { "TripleTwentys",
+                                new BsonDocument("$arrayElemAt", new BsonArray { "$TripleTwentys",
+                                    new BsonDocument("$indexOfArray", new BsonArray { "$PlayerIds", id }) })
+                            }
+                        }
+                    ),
+
+                    // Stage 3: Group by any field (e.g., PlayerIdIndex) and calculate averages
+                  
+                    new BsonDocument("$group",
+                    new BsonDocument
+                    {
+                        { "_id", "$PlayersId" },  // Group by PlayerId
+                        { "PointAverage", new BsonDocument("$avg", "$GameScore") },
+                        { "BullsEyeAverage", new BsonDocument("$avg", "$BullsEye") },
+                        { "TripleTwentyAverage", new BsonDocument("$avg", "$TripleTwentys") },
+                        { "WinCount", new BsonDocument("$sum",
+                                    new BsonDocument("$cond", new BsonArray
+                                    {
+                                        new BsonDocument("$eq", new BsonArray { "$GameScore", 301 }),
+                                        1,
+                                        0
+                                    })
+                                )},
+                            { "LossCount", new BsonDocument("$sum",
+                                new BsonDocument("$cond", new BsonArray
+                                {
+                                    new BsonDocument("$ne", new BsonArray { "$GameScore", 301 }),
+                                    1,
+                                    0
+                                })
+                            )}
+                    }
+                )
 
 
-            int pointSum = 0;
-
-            int ttSum = 0;
-
-            int beSum = 0;
-
-            int winCount = 0;
+                };
 
 
-            foreach (var game in games)
-            {
+         
 
-                if (!ValidGame(game)) continue;
 
-                var UserIndex = game.PlayerIds.FindIndex(g => g.Equals(id));
+            var result = _gameCollection.Aggregate<UserAveragesDTO>(pipeline).ToList().FirstOrDefault();
 
-                var score = game.GameScores[UserIndex];
+            if (result == null) return new UserAveragesDTO(0,0,0,0,0);
 
-                pointSum += score;
-                ttSum += game.TripleTwentys[UserIndex];
-                beSum += game.BullsEyes[UserIndex];
-
-                if (score == 301)
-                    winCount++;
-
-            }
-
-            double gameCount = games.Count;
-
-            return new UserAveragesDTO(pointSum / gameCount, beSum / gameCount, ttSum / gameCount, winCount, gameCount - winCount);
+            return result;
         }
 
         public async Task<List<PersonalGameDTO>> FindGamesById(Guid id)

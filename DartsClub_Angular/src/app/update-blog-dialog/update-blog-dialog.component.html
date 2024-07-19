@@ -1,0 +1,46 @@
+<mat-dialog-content>
+    <form class="pill-group-dart" [formGroup]="PostForm">
+        <mat-form-field class="pill">
+            <mat-label>Blog Title</mat-label>
+            <input matInput formControlName="Title" >
+          </mat-form-field>
+         
+          <mat-form-field class="pill">
+            <mat-label>Post Categories</mat-label>
+            <mat-chip-grid #chipGrid aria-label="Enter categories" [formControl]="formControl">
+              @for (keyword of keywords(); track keyword) {
+                <mat-chip-row (removed)="removeKeyword(keyword)">
+                  {{keyword}}
+                  <button matChipRemove aria-label="'remove ' + keyword">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+              }
+            </mat-chip-grid>
+            <input
+              placeholder="New category..."
+              [matChipInputFor]="chipGrid"
+              (matChipInputTokenEnd)="add($event)"
+            />
+            
+          </mat-form-field>
+        
+        
+          <mat-form-field class="pill">
+            <mat-label>Blog Content</mat-label>
+            <textarea matInput formControlName="Content"></textarea>
+          </mat-form-field>
+        
+          
+        
+        </form>
+
+  <p *ngIf="successFlag"> Blog Changed Successfully, you can close this window now</p>
+ 
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">close</button>
+  <button [disabled]="PostForm.invalid" (click)="onSubmit()"  mat-flat-button color="primary" >Update Blog</button>
+ 
+</mat-dialog-actions>
+

@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { UserDTO } from '../models/UserDTO';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
-
+import {
+  MatSnackBar
+} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
 import { AveragesDTO } from '../models/AveragesDTO';
 import { GameService } from '../game.service';
@@ -38,10 +40,7 @@ export class GameComponent {
         this.UserGames = ret
         console.log(ret)
       })
-      this.gameService.getAverages(this.User.id).subscribe(ret => {
-        this.UserAverages = ret
-        console.log(ret)
-      })
+     
 
      })
   }

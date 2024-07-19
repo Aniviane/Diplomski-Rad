@@ -5,6 +5,7 @@ import {MatCardModule} from '@angular/material/card';
 
 import {MatButtonModule} from '@angular/material/button';
 
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -15,7 +16,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,MatCardModule,MatButtonModule,MatFormFieldModule,MatInputModule,RouterLink,CommonModule],
+  imports: [MatSidenavModule,RouterOutlet,MatCardModule,MatButtonModule,MatFormFieldModule,MatInputModule,RouterLink,CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -24,6 +25,11 @@ export class AppComponent {
 
   constructor(private userService:UserService) {}
 
+  buttonText = '<<'
+
+  openChanged() {
+    this.buttonText = this.buttonText === '<<' ? '>>' : '<<';
+  }
   
   User : UserDTO | null = null
 
@@ -32,6 +38,10 @@ export class AppComponent {
       console.log("app got user")
       this.User = user;
      })
+  }
+
+  logOut() {
+    this.userService.logOut()
   }
 
   printUser() {

@@ -1,8 +1,8 @@
 export class ReservationDTO {
-    Date: Date
-    Hour : number
+    day: Date
+    hour : number
     constructor() {
-        this.Date = new Date()
-        this.Hour = 0
+        this.day = new Date()
+        this.hour = 0
     }
 }

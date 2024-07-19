@@ -32,7 +32,7 @@ namespace WebApplication1.Controllers
         private readonly IDistributedCache _redisCache;
 
 
-        private string serverPath = "https://localhost:7133";
+        private string serverPath = "https://localhost:44314";
         public UsersController(DataContext context, IDistributedCache distributedCache)
         {
             _context = context;
@@ -66,12 +66,12 @@ namespace WebApplication1.Controllers
 
 
         [HttpPost("Picture")]
-        public async Task<string> SetPicture(UploadPictureDTO dto)
+        public async Task<Picture?> SetPicture(UploadPictureDTO dto)
         {
 
             var user = _context.Users.Find(dto.UserId);
 
-            if (user == null) return "invalid user";
+            if (user == null) return null;
 
             if (user != null && dto.Picture.Length > 0)
             {
@@ -102,20 +102,20 @@ namespace WebApplication1.Controllers
                 user.Picture = pic;
                 _context.SaveChanges();
 
-                return pic.imagePath;
+                return pic;
 
             }
 
-                return "picture set?";
+            return null;
         }
 
 
         [HttpPut("Picture")]
-        public async Task<string> UpdatePicture(UploadPictureDTO dto)
+        public async Task<Picture?> UpdatePicture(UploadPictureDTO dto)
         {
-            var user = _context.Users.Find(dto.UserId);
+            var user = _context.Users.Where(user => user.ID == dto.UserId).Include(user => user.Picture).FirstOrDefault();
 
-            if (user == null) return "invalid user";
+            if (user == null) return null;
 
             if (user.Picture == null)
             {
@@ -148,10 +148,10 @@ namespace WebApplication1.Controllers
                     user.Picture = pic;
                     _context.SaveChanges();
 
-                    return pic.imagePath;
+                    return pic;
                 }
 
-                return "something wrong with the picture";
+                return null;
             }
             
             
@@ -188,28 +188,52 @@ namespace WebApplication1.Controllers
                         dto.Picture.CopyTo(stream);
                     }
 
-                    var pic = new Picture();
-                    pic.imagePath = serverPath + "/Pictures/Users/" + folderName + "/" + imageName;
-                    pic.UserId = user.ID;
-
-                    user.Picture = pic;
+                  
+                    user.Picture.imagePath = serverPath + "/Pictures/Users/" + folderName + "/" + imageName;
+                   
 
                     _context.SaveChanges();
 
-                    return pic.imagePath;
+                    return user.Picture;
                 }
-            
 
-                return "Something wrong with the picture";
+
+            return null;
             
         }
 
+        [HttpPut("Password")]
+        public async Task<bool> ChangePassword(UpdateUserDTO dto)
+        {
+            var user = _context.Users.Find(dto.Id);
+
+            if (user == null) return false;
+
+
+            if (!BCrypt.Net.BCrypt.Verify(dto.OldPassword, user.Password)) return false;
+
+            var passHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+
+            user.Password = passHash;
+            try {
+
+
+               await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         [HttpPost("Login")]
-        public  ActionResult<User> LoginUser([FromBody] LoginDTO loginDTO)
+        public  ActionResult<UserDTO> LoginUser([FromBody] LoginDTO loginDTO)
         {
 
 
-            var user =  _context.Users.Where(x =>  x.Name == loginDTO.Username).FirstOrDefault();
+            var user =  _context.Users.Where(x =>  x.Name == loginDTO.Username).Include(user => user.Reservations).Include(user => user.Picture).FirstOrDefault();
 
             if (user == null || user.ID == null) return BadRequest();
 
@@ -221,11 +245,12 @@ namespace WebApplication1.Controllers
                 [
                     new Claim(ClaimTypes.Role, user.isModerator.ToString()),
                     new Claim(ClaimTypes.SerialNumber, user.ID.ToString()),
+                    new Claim(ClaimTypes.DateOfBirth, DateTime.Now.ToString()),
                 ];
                 SymmetricSecurityKey secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("TrueMovieAwardsTrueMovieAwardsTrueMovieAwardsTrueMovieAwards"));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
                 var tokenOptions = new JwtSecurityToken(
-                    issuer: "https://localhost:7133/",
+                    issuer: "https://localhost:44314/",
                     claims: claims,
                     expires: DateTime.Now.AddHours(1),
                     signingCredentials: signinCredentials
@@ -240,9 +265,8 @@ namespace WebApplication1.Controllers
 
                 
 
-                var item = _redisCache.GetString(user.ID.ToString());
 
-                return user;
+                return new UserDTO(user);
             
         }
 
@@ -250,47 +274,50 @@ namespace WebApplication1.Controllers
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(Guid? id)
+        public async Task<ActionResult<UserDTO>> GetUser(Guid? id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = _context.Users.Where(user => user.ID == id).Include(user => user.Picture).Include(user => user.Reservations).FirstOrDefault();
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            return user;
+            List<Claim> claims =
+               [
+                   new Claim(ClaimTypes.Role, user.isModerator.ToString()),
+                    new Claim(ClaimTypes.SerialNumber, user.ID.ToString()),
+                    new Claim(ClaimTypes.DateOfBirth, DateTime.Now.ToString()),
+                ];
+            SymmetricSecurityKey secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("TrueMovieAwardsTrueMovieAwardsTrueMovieAwardsTrueMovieAwards"));
+            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            var tokenOptions = new JwtSecurityToken(
+                issuer: "https://localhost:44314/",
+                claims: claims,
+                expires: DateTime.Now.AddHours(1),
+                signingCredentials: signinCredentials
+                ); ;
+            string token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+
+
+
+            _redisCache.SetString(user.ID.ToString(), token);
+
+
+            return new UserDTO(user);
         }
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(Guid? id, User user)
+        public async Task<string> PutUser(Guid? id, User data)
         {
-            if (id != user.ID)
-            {
-                return BadRequest();
-            }
+            var user = _context.Users.Where(user => user.ID == id).FirstOrDefault();
 
-            _context.Entry(user).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent();
+            return "";
         }
 
         // POST: api/Users

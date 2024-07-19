@@ -13,19 +13,21 @@ import { ReservationService } from '../reservation.service';
 import { createReservationsDTO } from '../models/createReservations';
 
 import {MatButtonModule} from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-reservation',
   standalone: true,
   providers: [provideNativeDateAdapter()],
-  imports: [MatChipsModule, CommonModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatButtonModule],
+  imports: [MatChipsModule,FormsModule,ReactiveFormsModule, CommonModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatButtonModule],
   templateUrl: './reservation.component.html',
   styleUrl: './reservation.component.css'
 })
 export class ReservationComponent {
 
 
-  constructor(private userService:UserService, private reservationService:ReservationService) {}
+  constructor(private userService:UserService,private _snackBar:MatSnackBar, private reservationService:ReservationService) {}
 
   addEvent( event: MatDatepickerInputEvent<Date>) {
     if(!event.value) return
@@ -47,6 +49,14 @@ export class ReservationComponent {
     this.userService.getCurrentUser().subscribe(user => {
       this.User = user;
      })
+
+     this.reservationService.getHours(new Date).subscribe(ret => {
+      console.log(ret)
+      this.Hours = [11,12,13,14,15,16,17,18,19,20].filter(num => !ret.includes(num))
+      this.Day =  new Date
+      console.log(this.Hours)
+    }
+  )
   }
 
   Hours : number[] = [11,12,13,14,15,16,17,18,19,20]
@@ -65,14 +75,29 @@ export class ReservationComponent {
 
 
   makeReservation() {
+
+    if(!this.User) {
+      this._snackBar.open("You need to log in first.", 'Close', {
+        duration: 3000
+      })
+
+      return
+    }
+
     let crDTO = new createReservationsDTO
-    crDTO.day = this.Day
+    crDTO.day = new Date(this.Day.toDateString())
     crDTO.userId = this.User!.id
     crDTO.Hours = this.selectedHours
     
     console.log(crDTO)
 
-    this.reservationService.postReservation(crDTO)
+    this.reservationService.postReservation(crDTO).subscribe(ret => {
+      console.log(ret)
+      if(ret)
+        this._snackBar.open("Reservation Created Successfully!", 'Close', {
+          duration: 3000
+        })
+    })
 
   }
 

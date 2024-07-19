@@ -59,6 +59,21 @@ namespace WebApplication1.Controllers
             return await _elasticService.SearchContent(content);
         }
 
+        [HttpGet("Title/{title}")]
+        public async Task<List<BlogPost>> SearchTitle(string title)
+        {
+            return await _elasticService.SearchTitle(title);
+        }
+
+        [HttpGet("Search/")]
+        public async Task<List<BlogPost>> SearchBlogs(string? content, string? title)
+        {
+            var query = new SearchQueryDTO();
+            query.Title = title;
+            query.Content = content;
+            return await _elasticService.SearchBlogs(query);
+        }
+
         [HttpGet("Category/{content}")]
         public async Task<List<BlogPost>> SearchCategory(string content)
         {

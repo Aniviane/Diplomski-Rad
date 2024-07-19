@@ -1,9 +1,9 @@
-<p>reservation works!</p>
-<div class="main">
-<mat-form-field>
+
+<div class="pill-group">
+<mat-form-field class="pill">
     <mat-label>Choose a date</mat-label>
     <input matInput [matDatepicker]="picker"
-    (dateChange)="addEvent($event)">
+    (dateChange)="addEvent($event)" [(ngModel)]="Day">
     <mat-hint>MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>

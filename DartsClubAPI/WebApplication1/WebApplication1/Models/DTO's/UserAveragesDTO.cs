@@ -1,4 +1,6 @@
-﻿namespace WebApplication1.Models.DTO_s
+﻿using MongoDB.Bson;
+
+namespace WebApplication1.Models.DTO_s
 {
     public class UserAveragesDTO
     {
@@ -10,7 +12,7 @@
             WinCount = winCount;
             LossCount = lossCount;
         }
-
+        public Guid? Id { get; set; }
         public double PointAverage { get; set; }
         public double BullsEyeAverage { get; set; }
 

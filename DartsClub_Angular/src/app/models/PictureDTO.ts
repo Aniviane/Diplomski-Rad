@@ -1,10 +1,10 @@
 export class PictureDTO {
-    Id : string
-    Path: string
-    UserId : string
+    id : string
+    imagePath: string
+    userId : string
     constructor() {
-        this.Path = ""
-        this.UserId = ""
-        this.Id = ""
+        this.imagePath = ""
+        this.userId = ""
+        this.id = ""
     }
 }

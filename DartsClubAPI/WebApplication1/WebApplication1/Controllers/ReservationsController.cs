@@ -31,11 +31,27 @@ namespace WebApplication1.Controllers
 
             List<ReservationDTO> reservations = new List<ReservationDTO>();
 
-            foreach(var res in ret)
+            foreach (var res in ret)
             {
                 reservations.Add(new ReservationDTO(res));
             }
             return reservations;
+        }
+
+        [HttpGet("MyReservations/{id}")]
+        public  ActionResult<IEnumerable<ReservationDTO>> GetMyReservations(Guid id)
+        {
+            var user =  _context.Users.Where(user => user.ID == id).Include(user => user.Reservations).FirstOrDefault();
+
+            if (user == null) return BadRequest();
+
+            List<ReservationDTO> reservations = new List<ReservationDTO>();
+
+            foreach (var res in user.Reservations)
+            {
+                reservations.Add(new ReservationDTO(res));
+            }
+            return reservations.OrderBy(reservation => reservation.Day).ToList();
         }
 
         // GET: api/Reservations/5
@@ -110,8 +126,9 @@ namespace WebApplication1.Controllers
 
             foreach(var hour in reservation.Hours)
             {
+                var date = reservation.Day.AddHours(2);
 
-                var day = new DateTime(reservation.Day.Year, reservation.Day.Month, reservation.Day.Day).AddDays(1);
+                var day = new DateTime(date.Year, date.Month, date.Day);
                 var res = new Reservation(user, day, hour, reservation.UserId);
 
                 if (!_context.Reservations.Any(r => r.Day == reservation.Day && r.Hour == hour))
