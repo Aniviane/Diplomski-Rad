@@ -48,10 +48,19 @@
   }
 
   p {
-    
-    font-size: 1.125rem;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    font-size: 1.225rem;
     color: var(--gray-700);
     
+    text-align: center;
+    justify-self: center;
+  }
+
+  span {
+   
+    font-size: 1.325rem;
+    align-content: center;
     text-align: center;
     justify-self: center;
   }
@@ -95,6 +104,7 @@
   }
 
   .pill-group {
+    margin-top: 2%;
     display: flex;
     flex-direction:column;
     align-items:center;
@@ -124,13 +134,15 @@
     display: flex;
     align-items:center;
     justify-content: center;
-    flex-wrap:nowrap;
+    flex-wrap:wrap;
     gap: 1.25rem;
   }
 
   .pill {
     display: flex;
-    width: 80%;
+    width: 90%;
+    margin-top: 2%;
+    padding-top: 2%;
     border: 5 solid var(--pill-accent);
     border-radius: 1.75rem;
     align-items: center;
@@ -151,7 +163,11 @@
     text-decoration: none;
   }
 
-
+  hr {
+    border: none;
+    height: 6px; /* Adjust height as needed */
+    background: var(--blue-to-purple-to-red-horizontal-gradient);
+  }
 
   .pill:hover {
     background: color-mix(in srgb, var(--pill-accent) 15%, transparent);

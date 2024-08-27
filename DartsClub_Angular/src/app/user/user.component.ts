@@ -8,6 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GameService } from '../game.service';
 import { AveragesDTO } from '../models/AveragesDTO';
 import {MatTableModule} from '@angular/material/table';
+import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
 
 import {
   MAT_DIALOG_DATA,
@@ -27,7 +29,7 @@ import { ReservationService } from '../reservation.service';
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [MatCardModule,MatButtonModule, MatTableModule],
+  imports: [MatCardModule,MatButtonModule, MatTableModule, MatIconModule, MatMenuModule],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })

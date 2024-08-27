@@ -45,7 +45,16 @@ export class GameComponent {
      })
   }
 
+  getDate(help: Date) : string {
+    if(help)
+      {
+        let date = new Date(help)
+      
 
+        return date.toDateString()
+      }
+      return ""
+  }
 
   displayedColumns: string[] = ['gameDate', 'score', 'gameType','tripleTwenties', 'bullsEyes', 'rounds'];
 

@@ -110,13 +110,16 @@ export class BlogComponent {
     data.title = this.titleField
 
     if(data.content == "" && data.title == "") { 
+      
       this.SearchedBlogs = this.Blogs  
+      this.UserApprovedBlogs = this.Blogs.filter(blog => blog.userId == this.User?.id)
       return
     }
 
     this.blogService.searchBlogs(data).subscribe(ret => {
       console.log(ret)
       this.SearchedBlogs = ret
+      this.UserApprovedBlogs = ret.filter(blog => blog.userId == this.User?.id)
     })
 
 

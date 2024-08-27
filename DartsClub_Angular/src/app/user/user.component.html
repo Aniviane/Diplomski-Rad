@@ -1,5 +1,134 @@
 <div class="main">
-  <mat-card  appearance="outlined">
+ 
+    
+    <div class="top">
+      <div class="left">
+        <div class="top">
+          <h1>{{User?.name || null}} </h1>
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button (click)="openDialog()"  mat-menu-item  color="primary" >
+              <mat-icon>voicemail</mat-icon>
+              <span>Change Picture</span>
+            </button>
+            
+            <button mat-menu-item (click)="openPassworDialog()">
+              <mat-icon>notifications_off</mat-icon>
+              <span>Change Password</span>
+            </button>
+          </mat-menu>
+        </div>
+        
+        <img mat-card-lg-image [src]="picturePath" >
+
+      </div>
+
+      <div class="right">
+        <div class="pill-group">
+          <mat-card  appearance="outlined" class="pill">
+            <mat-card-header>
+                <mat-card-title-group>
+                  <mat-card-title>
+                   <p> Your average points per game:
+                  </p>
+
+                   </mat-card-title>
+                  
+                </mat-card-title-group>
+              </mat-card-header>
+    
+              <mat-card-content><p> {{UserAverages?.pointAverage || 0}} </p></mat-card-content>
+            </mat-card>
+        </div>
+    <hr>
+        <div class="pill-group">
+          <mat-card  appearance="outlined" class="pill">
+            <mat-card-header>
+                <mat-card-title-group>
+                  <mat-card-title> <p> Your  number of Wins: </p></mat-card-title>
+                  
+                </mat-card-title-group>
+              </mat-card-header>
+          
+              <mat-card-content><p> {{UserAverages?.winCount || 0}} </p></mat-card-content>
+          </mat-card>
+    
+          <mat-card  appearance="outlined" class="pill">
+            <mat-card-header>
+                <mat-card-title-group>
+                  <mat-card-title> <p> Your number of Losses: </p></mat-card-title>
+                  
+                </mat-card-title-group>
+              </mat-card-header>
+          
+              <mat-card-content> <p> {{UserAverages?.lossCount || 0}} </p></mat-card-content>
+          </mat-card>
+        </div>
+        <hr>
+    
+        <div class="pill-group">
+          <mat-card  appearance="outlined" class="pill">
+            <mat-card-header>
+                <mat-card-title-group>
+                  <mat-card-title><p>Your average number of Triple Twenties per game:  </p> </mat-card-title>
+                  
+                </mat-card-title-group>
+              </mat-card-header>
+          
+              <mat-card-content> <p>{{UserAverages?.tripleTwentyAverage  || 0}} </p></mat-card-content>
+          </mat-card>
+    
+          <mat-card  appearance="outlined" class="pill">
+            <mat-card-header>
+                <mat-card-title-group>
+                  <mat-card-title><p>   Your average number of Bulls Eyes per game: </p></mat-card-title>
+                  
+                </mat-card-title-group>
+              </mat-card-header>
+          
+              <mat-card-content><p> {{UserAverages?.bullsEyeAverage || 0}} </p></mat-card-content>
+          </mat-card>
+        </div>
+    
+     
+      </div>
+    </div>
+    <hr>
+
+    <div class="pill-group-dart">
+      <h1> You pending reservations </h1>
+      
+      
+      <table mat-table [dataSource]="PendingReservations" class="mat-elevation-z8" >
+
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+      
+        <!-- Position Column -->
+        <ng-container matColumnDef="Date" class="pill">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let reservation"> {{getDate(reservation.day)}} </td>
+        </ng-container>
+      
+        
+    
+          <ng-container matColumnDef="Time" class="pill">
+            <th mat-header-cell *matHeaderCellDef> Time </th>
+            <td mat-cell *matCellDef="let reservation"> {{reservation.hour + ':00'}} - {{(reservation.hour + 1) + ':00'}} </td>
+          </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+    </div>
+
+</div>
+
+<!-- 
+ <mat-card  appearance="outlined">
       <mat-card-header>
           <mat-card-title-group>
             <mat-card-title><h1>{{User?.name || null}} </h1></mat-card-title>
@@ -17,7 +146,7 @@
       <mat-card  appearance="outlined" class="pill">
         <mat-card-header>
             <mat-card-title-group>
-              <mat-card-title>Your average points per game:</mat-card-title>
+              <mat-card-title> <h2>Your average points per game: </h2> </mat-card-title>
               
             </mat-card-title-group>
           </mat-card-header>
@@ -74,35 +203,5 @@
           <mat-card-content> <p> {{UserAverages?.lossCount || 0}} </p></mat-card-content>
       </mat-card>
     </div>
-    
-    <hr>
 
-    <div class="pill-group-dart">
-      <p> You pending reservations </p>
-      
-      
-      <table mat-table [dataSource]="PendingReservations" class="mat-elevation-z8" >
-
-        <!--- Note that these columns can be defined in any order.
-              The actual rendered columns are set as a property on the row definition" -->
-      
-        <!-- Position Column -->
-        <ng-container matColumnDef="Date" class="pill">
-          <th mat-header-cell *matHeaderCellDef> Date </th>
-          <td mat-cell *matCellDef="let reservation"> {{getDate(reservation.day)}} </td>
-        </ng-container>
-      
-        
-    
-          <ng-container matColumnDef="Time" class="pill">
-            <th mat-header-cell *matHeaderCellDef> Time </th>
-            <td mat-cell *matCellDef="let reservation"> {{reservation.hour + ':00'}} - {{(reservation.hour + 1) + ':00'}} </td>
-          </ng-container>
-    
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-
-    </div>
-
-</div>
+-->

@@ -1,43 +1,31 @@
 
 <div class="main">
+  <div class="pill-group-dart">
+    <mat-form-field class="pill-">
+      <mat-label>Search Blogs by Title</mat-label>
+      <input matInput name="title" [(ngModel)]="titleField" (change)="onChange()">
+    </mat-form-field>
 
-<mat-tab-group>
-  <mat-tab label="Not Approved Blogs" *ngIf="User?.isModerator">
-    <div class="pill-group" *ngIf="User?.isModerator">
- 
-      <mat-card class="pill"  *ngFor="let blog of NotApprovedBlogs">
-          <mat-card-title>{{blog.short_Description}}</mat-card-title>
-        
-       <mat-divider></mat-divider>
-       <mat-chip-set aria-label="Categories">
-          <mat-chip *ngFor="let category of blog.categories.split(',')">{{category}}</mat-chip>
-          
-        </mat-chip-set>
-  
-       <mat-divider></mat-divider>
-  
-      <mat-card-content><p>{{blog.blog_Content}} </p></mat-card-content>
-        
-      <mat-card-actions>
-          <button mat-button (click)="approveBlog(blog.id)">Approve Blog</button>
-          <button mat-button (click)="deleteBlog(blog.id)" >Delete Blog</button>
-        </mat-card-actions>
-  
-      </mat-card>
-  
-  
+    <mat-form-field class="pill-">
+      <mat-label>Search Blogs by Content</mat-label>
+      <input matInput name="content" [(ngModel)]="contentField" (change)="onChange()">
+    </mat-form-field>
   </div>
-  
-  
-  </mat-tab>
+<mat-tab-group>
+
+ 
   <mat-tab label="Your Approved posts" *ngIf="UserApprovedBlogs.length > 0"> 
 
+
     <div class="pill-group"  >
+
+      
+    
       
       <p>If you have posted a blog and you don't see it yet, please be patient while our moderator team approves it.</p>
       
       <mat-card class="pill"  *ngFor="let blog of UserApprovedBlogs">
-          <mat-card-title>{{blog.short_Description}}</mat-card-title>
+          <mat-card-title>    {{blog.short_Description}}  </mat-card-title>
         
        <mat-divider></mat-divider>
        <mat-chip-set aria-label="Categories">
@@ -47,7 +35,7 @@
     
        <mat-divider></mat-divider>
     
-      <mat-card-content><p>{{blog.blog_Content}} </p></mat-card-content>
+      <mat-card-content><p>  {{blog.blog_Content}} </p></mat-card-content>
         
       <mat-card-actions>
         <button mat-button (click)="changeBlog(blog.id)">Change Blog</button>
@@ -64,17 +52,7 @@
   
     <div class="pill-group" >
   
-      <div class="pill-group-dart">
-        <mat-form-field class="pill-">
-          <mat-label>Search Blogs by Title</mat-label>
-          <input matInput name="title" [(ngModel)]="titleField" (change)="onChange()">
-        </mat-form-field>
-  
-        <mat-form-field class="pill-">
-          <mat-label>Search Blogs by Content</mat-label>
-          <input matInput name="content" [(ngModel)]="contentField" (change)="onChange()">
-        </mat-form-field>
-      </div>
+    
       
           <mat-card class="pill"  *ngFor="let blog of SearchedBlogs">
               <mat-card-title>{{blog.short_Description}}</mat-card-title>

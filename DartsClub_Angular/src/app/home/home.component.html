@@ -1,0 +1,47 @@
+
+<div class="main">
+  
+  
+    
+  
+
+    <div class="pill-group-dart">
+      <mat-card class="pill">
+        <mat-card-title>Get involved with many activities of our Darts Club!</mat-card-title>
+      
+      <mat-card-content>Keep track of your past games and created reservations!</mat-card-content>
+      
+      <mat-card-actions>
+        <button mat-button routerLink="Login" *ngIf="!User">Login or Create an Account</button>
+        <button mat-button routerLink="User" *ngIf="User">Check out your Account</button>
+        <button mat-button routerLink="Games" *ngIf="User">Take a look at your Games</button>
+      </mat-card-actions>
+      </mat-card>
+  
+      <mat-card class="pill">
+        <mat-card-title>Check out our thriving bloging community</mat-card-title>
+      
+      
+      <mat-card-actions>
+        <button  mat-flat-button color="primary" routerLink="Blogs">Blogs</button>
+        <button  mat-flat-button color="secondary" *ngIf="User" routerLink="Post">Post a Blog</button>
+      </mat-card-actions>
+      </mat-card>
+  
+      <mat-card class="pill">
+        <mat-card-title>Want to make a reservations at our club?</mat-card-title>
+  
+      
+      <mat-card-actions>
+        <button routerLink="Reservation" mat-button>Check for free dates</button>
+      </mat-card-actions>
+      </mat-card>
+    </div>
+    
+    <hr> 
+  
+  
+  
+  
+  
+  </div>

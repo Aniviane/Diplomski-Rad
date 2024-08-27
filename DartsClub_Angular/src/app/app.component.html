@@ -173,23 +173,20 @@
 
     <div class="header-wrapper">
       <h1>Welcome to the Dart Zone!</h1>
-      <button type="button" mat-stroked-button (click)="drawer.toggle()">
-        <p>{{buttonText}}</p>
-      </button>
+   
     </div>
-    <mat-drawer #drawer class="example-sidenav" (openedChange)="openChanged()" position="end" mode="side">
+    
       <div class="pill-group">
         <button (click)="logOut()" class="pill" *ngIf="User">Log Out</button>
+        <button routerLink=""  class="pill">Home</button>
+        <button routerLink="User" *ngIf="User" class="pill">Your Account</button>
         <button routerLink="Games" *ngIf="User" class="pill">Take a look at your Games</button>
         <button routerLink="Blogs" class="pill">Blogs</button>
         <button *ngIf="User" class="pill" routerLink="Post">Post a Blog</button>
         <button routerLink="Reservation" class="pill" *ngIf="User">Make a reservation</button>
         <button class="pill" *ngIf="User?.isModerator" routerLink="AddGame">Add Game</button>
       </div>
-    </mat-drawer>
-    <div class="example-sidenav-content">
-      <!-- The button is moved inside the header-wrapper -->
-    </div>
+  
 
   </mat-drawer-container>
 
@@ -199,50 +196,5 @@
 <hr> 
 
 
-<div class="main">
-  
-  
-    
-  
-
-  <div class="pill-group-dart">
-    <mat-card class="pill">
-      <mat-card-title>Get involved with many activities of our Darts Club!</mat-card-title>
-    
-    <mat-card-content>Keep track of your past games and created reservations!</mat-card-content>
-    
-    <mat-card-actions>
-      <button mat-button routerLink="Login" *ngIf="!User">Login or Create an Account</button>
-      <button mat-button routerLink="User" *ngIf="User">Check out your Account</button>
-      <button mat-button routerLink="Games" *ngIf="User">Take a look at your Games</button>
-    </mat-card-actions>
-    </mat-card>
-
-    <mat-card class="pill">
-      <mat-card-title>Check out our thriving bloging community</mat-card-title>
-    
-    
-    <mat-card-actions>
-      <button  mat-flat-button color="primary" routerLink="Blogs">Blogs</button>
-      <button  mat-flat-button color="secondary" *ngIf="User" routerLink="Post">Post a Blog</button>
-    </mat-card-actions>
-    </mat-card>
-
-    <mat-card class="pill">
-      <mat-card-title>Want to make a reservations at our club?</mat-card-title>
-
-    
-    <mat-card-actions>
-      <button routerLink="Reservation" mat-button>Check for free dates</button>
-    </mat-card-actions>
-    </mat-card>
-  </div>
-  
-  <hr> 
 
 <router-outlet />
-
-
-
-
-</div>
