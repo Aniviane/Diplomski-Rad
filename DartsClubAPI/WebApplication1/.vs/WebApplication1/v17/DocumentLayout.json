@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{27AD2CAB-A537-421E-8E94-DFB2C55BF4A7}|WebApplication1\\WebApplication1.csproj|d:\\diplomski\\diplomski-rad\\dartsclubapi\\webapplication1\\webapplication1\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{27AD2CAB-A537-421E-8E94-DFB2C55BF4A7}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{27AD2CAB-A537-421E-8E94-DFB2C55BF4A7}|WebApplication1\\WebApplication1.csproj|d:\\diplomski\\diplomski-rad\\dartsclubapi\\webapplication1\\webapplication1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{27AD2CAB-A537-421E-8E94-DFB2C55BF4A7}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -41,10 +45,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{27AD2CAB-A537-421E-8E94-DFB2C55BF4A7}|WebApplication1\\WebApplication1.csproj|d:\\diplomski\\diplomski-rad\\dartsclubapi\\webapplication1\\webapplication1\\models\\dto\u0027s\\searchquerydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{27AD2CAB-A537-421E-8E94-DFB2C55BF4A7}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\models\\dto\u0027s\\searchquerydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{27AD2CAB-A537-421E-8E94-DFB2C55BF4A7}|WebApplication1\\WebApplication1.csproj|d:\\diplomski\\diplomski-rad\\dartsclubapi\\webapplication1\\webapplication1\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{27AD2CAB-A537-421E-8E94-DFB2C55BF4A7}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{27AD2CAB-A537-421E-8E94-DFB2C55BF4A7}|WebApplication1\\WebApplication1.csproj|d:\\diplomski\\diplomski-rad\\dartsclubapi\\webapplication1\\webapplication1\\models\\framework\\models\\dtos\\updateuserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -150,32 +150,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ElasticService.cs",
-              "DocumentMoniker": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Controllers\\Services\\ElasticService.cs",
-              "RelativeDocumentMoniker": "WebApplication1\\Controllers\\Services\\ElasticService.cs",
-              "ToolTip": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Controllers\\Services\\ElasticService.cs",
-              "RelativeToolTip": "WebApplication1\\Controllers\\Services\\ElasticService.cs",
-              "ViewState": "AQIAALAAAAAAAAAAAAAowL4AAAAVAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-10T18:23:07.359Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "PersonalGameDTO.cs",
-              "DocumentMoniker": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Models\\DTO\u0027s\\PersonalGameDTO.cs",
-              "RelativeDocumentMoniker": "WebApplication1\\Models\\DTO\u0027s\\PersonalGameDTO.cs",
-              "ToolTip": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Models\\DTO\u0027s\\PersonalGameDTO.cs",
-              "RelativeToolTip": "WebApplication1\\Models\\DTO\u0027s\\PersonalGameDTO.cs",
-              "ViewState": "AQIAACYAAAAAAAAAAAAAACcAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-24T16:45:34.233Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\appsettings.json",
               "RelativeDocumentMoniker": "WebApplication1\\appsettings.json",
@@ -187,7 +162,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "ReservationsController.cs",
               "DocumentMoniker": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Controllers\\ReservationsController.cs",
               "RelativeDocumentMoniker": "WebApplication1\\Controllers\\ReservationsController.cs",
@@ -199,7 +174,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "MongoService.cs",
               "DocumentMoniker": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Controllers\\Services\\MongoService.cs",
               "RelativeDocumentMoniker": "WebApplication1\\Controllers\\Services\\MongoService.cs",
@@ -211,7 +186,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Program.cs",
               "RelativeDocumentMoniker": "WebApplication1\\Program.cs",
@@ -224,7 +199,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "UserAveragesDTO.cs",
               "DocumentMoniker": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Models\\DTO\u0027s\\UserAveragesDTO.cs",
               "RelativeDocumentMoniker": "WebApplication1\\Models\\DTO\u0027s\\UserAveragesDTO.cs",
@@ -236,7 +211,45 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 0,
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Controllers\\UsersController.cs",
+              "ToolTip": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "WebApplication1\\Controllers\\UsersController.cs",
+              "ViewState": "AQIAAM0AAAAAAAAAAAA4wNEAAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-15T17:20:25.595Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PersonalGameDTO.cs",
+              "DocumentMoniker": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Models\\DTO\u0027s\\PersonalGameDTO.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Models\\DTO\u0027s\\PersonalGameDTO.cs",
+              "ToolTip": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Models\\DTO\u0027s\\PersonalGameDTO.cs",
+              "RelativeToolTip": "WebApplication1\\Models\\DTO\u0027s\\PersonalGameDTO.cs",
+              "ViewState": "AQIAACYAAAAAAAAAAAAAACcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-24T16:45:34.233Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ElasticService.cs",
+              "DocumentMoniker": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Controllers\\Services\\ElasticService.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Controllers\\Services\\ElasticService.cs",
+              "ToolTip": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Controllers\\Services\\ElasticService.cs",
+              "RelativeToolTip": "WebApplication1\\Controllers\\Services\\ElasticService.cs",
+              "ViewState": "AQIAALAAAAAAAAAAAAAowL4AAAAVAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-10T18:23:07.359Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "BlogController.cs",
               "DocumentMoniker": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Controllers\\BlogController.cs",
               "RelativeDocumentMoniker": "WebApplication1\\Controllers\\BlogController.cs",
@@ -248,7 +261,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Game.cs",
               "DocumentMoniker": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Models\\Game.cs",
               "RelativeDocumentMoniker": "WebApplication1\\Models\\Game.cs",
@@ -272,7 +285,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "SearchQueryDTO.cs",
               "DocumentMoniker": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Models\\DTO\u0027s\\SearchQueryDTO.cs",
               "RelativeDocumentMoniker": "WebApplication1\\Models\\DTO\u0027s\\SearchQueryDTO.cs",
@@ -293,19 +306,6 @@
               "ViewState": "AQIAAAIAAAAAAAAAAAAxwAoAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-29T18:38:41.349Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "UsersController.cs",
-              "DocumentMoniker": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Controllers\\UsersController.cs",
-              "RelativeDocumentMoniker": "WebApplication1\\Controllers\\UsersController.cs",
-              "ToolTip": "D:\\Diplomski\\Diplomski-Rad\\DartsClubAPI\\WebApplication1\\WebApplication1\\Controllers\\UsersController.cs",
-              "RelativeToolTip": "WebApplication1\\Controllers\\UsersController.cs",
-              "ViewState": "AQIAAOUAAAAAAAAAAAAmwPAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-15T17:20:25.595Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Document",

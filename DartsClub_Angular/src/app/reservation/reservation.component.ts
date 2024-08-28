@@ -15,6 +15,7 @@ import { createReservationsDTO } from '../models/createReservations';
 import {MatButtonModule} from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reservation',
@@ -27,7 +28,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 export class ReservationComponent {
 
 
-  constructor(private userService:UserService,private _snackBar:MatSnackBar, private reservationService:ReservationService) {}
+  constructor(private userService:UserService,private _snackBar:MatSnackBar, private router:Router, private reservationService:ReservationService) {}
 
   addEvent( event: MatDatepickerInputEvent<Date>) {
     if(!event.value) return
@@ -48,7 +49,11 @@ export class ReservationComponent {
   ngOnInit() : void {
     this.userService.getCurrentUser().subscribe(user => {
       this.User = user;
+      if(!this.User)
+        
+        this.router.navigate([''])
      })
+
 
      this.reservationService.getHours(new Date).subscribe(ret => {
       console.log(ret)
@@ -65,7 +70,7 @@ export class ReservationComponent {
   selectedHours : number[] = []
 
   chipSelected(hour : number) {
-
+   
     if(this.selectedHours.includes(hour))
       this.selectedHours = this.selectedHours.filter(num => num !== hour)
     else 

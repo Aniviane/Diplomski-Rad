@@ -6,16 +6,16 @@
         <div class="top">
           <h1>{{User?.name || null}} </h1>
           <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-            <mat-icon>more_vert</mat-icon>
+            <img src="../../assets/settings.png">
           </button>
           <mat-menu #menu="matMenu">
             <button (click)="openDialog()"  mat-menu-item  color="primary" >
-              <mat-icon>voicemail</mat-icon>
+              <mat-icon>mood</mat-icon>
               <span>Change Picture</span>
             </button>
             
             <button mat-menu-item (click)="openPassworDialog()">
-              <mat-icon>notifications_off</mat-icon>
+              <mat-icon>lock_open</mat-icon>
               <span>Change Password</span>
             </button>
           </mat-menu>
@@ -98,7 +98,7 @@
     <hr>
 
     <div class="pill-group-dart">
-      <h1> You pending reservations </h1>
+      <h2> You pending reservations </h2>
       
       
       <table mat-table [dataSource]="PendingReservations" class="mat-elevation-z8" >

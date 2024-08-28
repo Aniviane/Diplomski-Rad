@@ -17,7 +17,7 @@
 </mat-chip-listbox>
 
 
-<button  (click)="makeReservation()"  mat-flat-button color="primary">Create Reservation</button>
+<button  (click)="makeReservation()"  mat-flat-button color="primary" [disabled]="selectedHours.length==0">Create Reservation</button>
 </div>
 
   

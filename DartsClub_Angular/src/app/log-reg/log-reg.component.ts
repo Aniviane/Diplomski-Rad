@@ -66,7 +66,8 @@ export class LogRegComponent {
 
     console.log("login data:  " + loginData)
 
-    this.userService.loginUser(loginData)
+    var user = this.userService.loginUser(loginData)
+   
 
   }
 

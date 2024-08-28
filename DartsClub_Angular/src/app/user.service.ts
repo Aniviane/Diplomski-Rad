@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, afterNextRender } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, throwError } from 'rxjs';
 import { LoginDTO } from './models/LoginDTO';
 import { UserCreateDTO } from './models/UserCreateDTO';
 import { UserDTO } from './models/UserDTO';
@@ -8,6 +8,7 @@ import { UsernamesDTO } from './models/UsernamesDTO';
 import { PictureDTO } from './models/PictureDTO';
 import { UpdatePictureDTO } from './models/UpdatePictureDTO';
 import { ChanegPasswordDTO } from './models/ChangePasswordDTO';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class UserService {
 
   private UserSubject = new BehaviorSubject<UserDTO | null>(null);
 
-  constructor(private http:HttpClient) {
+  constructor(private http:HttpClient, private _snackBar: MatSnackBar) {
     afterNextRender(() => {
 
       const storedData = sessionStorage.getItem('userId');
@@ -98,10 +99,36 @@ export class UserService {
     let help = this.http.post<UserDTO>(this.BaseUrl + "api/Users/Login",data).subscribe(ret => {
       console.log("user logged in -> ", ret )
       this.setUser(ret)
+      if(ret) 
+      this._snackBar.open("Welcome " + ret?.name, 'Close', {
+        duration: 3000
+      })
+      else 
+      this._snackBar.open("Your Username or Password might not be correct", 'Close', {
+        duration: 3000
+      })
       return ret
-  })
-  console.log("returning bad user")
+  }, err => {this.handleError(err)})
   return new UserDTO
     
+  }
+
+
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.status === 0) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      console.error(
+        `Backend returned code ${error.status}, body was: `, error.error);
+    }
+    this._snackBar.open("Your Username or Password might not be correct", 'Close', {
+      duration: 3000
+    })
+    // Return an observable with a user-facing error message.
+    return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 }

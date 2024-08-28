@@ -48,6 +48,34 @@
     </div>
 
   </mat-tab>
+
+  <mat-tab label="Not Approved Blogs" *ngIf="User?.isModerator"> 
+  
+    <div class="pill-group" >
+  
+    
+      
+          <mat-card class="pill"  *ngFor="let blog of NotApprovedBlogs">
+              <mat-card-title>{{blog.short_Description}}</mat-card-title>
+            
+           <mat-divider></mat-divider>
+           <mat-chip-set aria-label="Categories">
+              <mat-chip *ngFor="let category of blog.categories.split(',')">{{category}}</mat-chip>
+              
+            </mat-chip-set>
+  
+           <mat-divider></mat-divider>
+  
+          <mat-card-content> <p> {{blog.blog_Content}} </p> </mat-card-content>
+            
+          <mat-card-actions>
+            <button mat-button (click)="approveBlog(blog.id)">Approve Blog</button>
+            <button mat-button (click)="deleteBlog(blog.id)" >Delete Blog</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+    </mat-tab>   
+
   <mat-tab label="Community blogs"> 
   
     <div class="pill-group" >
@@ -71,7 +99,7 @@
           </mat-card>
         
           
-  </div>
+    </div>
   
   </mat-tab>
 </mat-tab-group>

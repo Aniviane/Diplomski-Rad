@@ -9,10 +9,12 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { UserService } from '../user.service';
 import { UserDTO } from '../models/UserDTO';
 
+import {MatIconModule} from '@angular/material/icon';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatSidenavModule,RouterOutlet,MatCardModule,MatButtonModule,MatFormFieldModule,MatInputModule,RouterLink,CommonModule],
+  imports: [MatSidenavModule,RouterOutlet,MatIconModule,MatCardModule,MatButtonModule,MatFormFieldModule,MatInputModule,RouterLink,CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
