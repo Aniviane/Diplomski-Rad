@@ -33,7 +33,7 @@ export class CreateBlogComponent {
     this.User = user;
     if(!this.User) {
       console.log("didnt find user")
-      this.router.navigate([''])
+      this.router.navigate(['Login'])
     }
    })
    

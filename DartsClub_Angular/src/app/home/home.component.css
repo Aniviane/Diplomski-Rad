@@ -240,17 +240,17 @@ mat-card {
   }
 
   .second{
-    --pill-accent: var(--vivid-pink);
+    --pill-accent: var(--bright-blue);
 
     
     background-image: url('../../assets/sticky_note.png'); /* Path to your background image */
     background-repeat: no-repeat;
     background-position: right; /* Aligns image to the right */
-    background-size:contain; /* Adjusts the image size */
+    background-size:auto; /* Adjusts the image size */
   }
 
  .third{
-  --pill-accent: var(--electric-violet);
+  --pill-accent: var(--orange-red);
 
     
    background-image: url('../../assets/event_available.png'); /* Path to your background image */

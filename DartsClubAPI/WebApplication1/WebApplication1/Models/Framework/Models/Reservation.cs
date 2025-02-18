@@ -2,8 +2,6 @@
 {
     public class Reservation
     {
-       
-
         public Guid? ID { get; set; }
 
         public DateTime Day { get; set; }

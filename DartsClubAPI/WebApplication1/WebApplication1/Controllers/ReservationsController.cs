@@ -105,11 +105,13 @@ namespace WebApplication1.Controllers
             var date = new DateTime(Date.Year,Date.Month,Date.Day);
             
 
-            var ret =  _context.Reservations.Where(Reservation => Reservation.Day == date);
+            var reservations =  _context.Reservations.Where(Reservation => Reservation.Day == date);
+
             List<int> Hours = new List<int>();
-            foreach (var res in ret)
+
+            foreach (var reservation in reservations)
             {
-                Hours.Add(res.Hour);
+                Hours.Add(reservation.Hour);
             }
             return Ok(Hours);
         }

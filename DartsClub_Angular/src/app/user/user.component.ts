@@ -44,7 +44,6 @@ export class UserComponent {
   User : UserDTO | null = null
   picturePath : string = this.User?.picture.imagePath || '../../assets/default.png'
   UserAverages : AveragesDTO | null = new AveragesDTO
-  PendingReservations : ReservationDTO[] = []
 
   constructor(private userService:UserService,private reservationService: ReservationService, private gameService:GameService, private router:Router) {}
   
@@ -105,20 +104,7 @@ export class UserComponent {
         return
       }
 
-      if(!this.User) return;
-      this.reservationService.getMyReservations(this.User.id).subscribe(ret => {
-        console.log(ret)
-        if(!this.User) return;
-        this.User.reservations = ret;
-
-        if(this.User.reservations) {
-          this.PendingReservations = this.User.reservations.filter(elem => 
-               new Date(elem.day) > new Date
-          )
-          console.log("pending reservations : ", this.PendingReservations)
-        }
-
-      })
+     
       
         if(!this.User.picture) 
           this.picturePath ='../../assets/default.png'
@@ -145,7 +131,6 @@ export class UserComponent {
       return ""
   }
   
-  displayedColumns: string[] = ['Date', 'Time'];
  
 
 }

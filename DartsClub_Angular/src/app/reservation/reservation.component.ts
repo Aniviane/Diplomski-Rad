@@ -16,12 +16,15 @@ import {MatButtonModule} from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ReservationDTO } from '../models/Reservation';
+
+import {MatTableModule} from '@angular/material/table';
 
 @Component({
   selector: 'app-reservation',
   standalone: true,
   providers: [provideNativeDateAdapter()],
-  imports: [MatChipsModule,FormsModule,ReactiveFormsModule, CommonModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatButtonModule],
+  imports: [MatTableModule,MatChipsModule,FormsModule,ReactiveFormsModule, CommonModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatButtonModule],
   templateUrl: './reservation.component.html',
   styleUrl: './reservation.component.css'
 })
@@ -32,6 +35,13 @@ export class ReservationComponent {
 
   addEvent( event: MatDatepickerInputEvent<Date>) {
     if(!event.value) return
+    if(event.value < new Date) {
+      this._snackBar.open("The date you have picked is invalid", 'Close', {
+        duration: 3000
+      })
+      this.Day = new Date
+      return;
+    }
     console.log(event.value)
     this.reservationService.getHours(event.value).subscribe(ret => {
         console.log(ret)
@@ -41,6 +51,11 @@ export class ReservationComponent {
       }
     )
   }
+
+  
+  PendingReservations : ReservationDTO[] = []
+  
+  displayedColumns: string[] = ['Date', 'Time'];
   
   Day : Date = new Date
 
@@ -51,7 +66,7 @@ export class ReservationComponent {
       this.User = user;
       if(!this.User)
         
-        this.router.navigate([''])
+        this.router.navigate(['Login'])
      })
 
 
@@ -60,6 +75,21 @@ export class ReservationComponent {
       this.Hours = [11,12,13,14,15,16,17,18,19,20].filter(num => !ret.includes(num))
       this.Day =  new Date
       console.log(this.Hours)
+
+      if(!this.User) return;
+      this.reservationService.getMyReservations(this.User.id).subscribe(ret => {
+        console.log(ret)
+        if(!this.User) return;
+        this.User.reservations = ret;
+
+        if(this.User.reservations) {
+          this.PendingReservations = this.User.reservations.filter(elem => 
+               new Date(elem.day) > new Date
+          )
+          console.log("pending reservations : ", this.PendingReservations)
+        }
+
+      })
     }
   )
   }
@@ -102,8 +132,25 @@ export class ReservationComponent {
         this._snackBar.open("Reservation Created Successfully!", 'Close', {
           duration: 3000
         })
+
+        ret.forEach(elem => {this.PendingReservations.push(elem)})
+
+        console.log(this.PendingReservations)
+
+
     })
 
+  }
+
+  getDate(help: Date) : string {
+    if(help)
+      {
+        let date = new Date(help)
+      
+
+        return date.toDateString()
+      }
+      return ""
   }
 
 }

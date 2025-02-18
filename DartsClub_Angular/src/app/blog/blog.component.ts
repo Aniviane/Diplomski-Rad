@@ -26,6 +26,7 @@ import { UpdateBlogDialogComponent } from '../update-blog-dialog/update-blog-dia
 import { SearchQueryDTO } from '../models/SearchQueryDTO';
 import { log } from 'console';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-blog',
@@ -35,7 +36,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './blog.component.css'
 })
 export class BlogComponent {
-  constructor(private userService:UserService, private blogService:BlogService) {}
+  constructor(private userService:UserService, private blogService:BlogService, private _snackBar: MatSnackBar) {}
 
   
   User : UserDTO | null = null
@@ -85,6 +86,10 @@ export class BlogComponent {
           const index = this.NotApprovedBlogs.findIndex(elem => elem.id == blogId)
           console.log(index, this.NotApprovedBlogs[index])
           this.NotApprovedBlogs.splice(index,1)
+
+          this._snackBar.open("Post has been Approved", 'Close', {
+            duration: 3000
+          })
         }
     })
   }
@@ -93,9 +98,17 @@ export class BlogComponent {
     this.blogService.deleteBlog(blogId).subscribe(ret => {
       if(ret)
         {
-          const index = this.NotApprovedBlogs.findIndex(elem => elem.id == blogId)
+          var index = this.NotApprovedBlogs.findIndex(elem => elem.id == blogId)
           console.log(index, this.NotApprovedBlogs[index])
           this.NotApprovedBlogs.splice(index,1)
+
+          index = this.UserApprovedBlogs.findIndex(elem => elem.id == blogId)
+          if(index)
+          this.UserApprovedBlogs.splice(index,1)
+
+          this._snackBar.open("Post has been deleted", 'Close', {
+            duration: 3000
+          })
         }
     })
   }

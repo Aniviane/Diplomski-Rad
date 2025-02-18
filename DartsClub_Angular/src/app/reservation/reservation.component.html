@@ -18,6 +18,34 @@
 
 
 <button  (click)="makeReservation()"  mat-flat-button color="primary" [disabled]="selectedHours.length==0">Create Reservation</button>
+
+<div class="pill-group-dart">
+  <h2> You pending reservations </h2>
+  
+  
+  <table mat-table [dataSource]="PendingReservations" class="mat-elevation-z8" >
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+  
+    <!-- Position Column -->
+    <ng-container matColumnDef="Date" class="pill">
+      <th mat-header-cell *matHeaderCellDef> Date </th>
+      <td mat-cell *matCellDef="let reservation"> {{getDate(reservation.day)}} </td>
+    </ng-container>
+  
+    
+
+      <ng-container matColumnDef="Time" class="pill">
+        <th mat-header-cell *matHeaderCellDef> Time </th>
+        <td mat-cell *matCellDef="let reservation"> {{reservation.hour + ':00'}} - {{(reservation.hour + 1) + ':00'}} </td>
+      </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+</div>
 </div>
 
   

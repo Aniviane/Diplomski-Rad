@@ -16,6 +16,7 @@ import { GameService } from '../game.service';
 import { UsernamesDTO } from '../models/UsernamesDTO';
 import { FullGameDTO } from '../models/FullGameDTO';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-post-game',
   standalone: true,
@@ -26,7 +27,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class PostGameComponent {
 
-  constructor(private userService:UserService,private _snackBar :MatSnackBar, private gameService:GameService) {}
+  constructor(private userService:UserService,private router:Router,private _snackBar :MatSnackBar, private gameService:GameService) {}
 
 
   ngOnInit() {
@@ -34,6 +35,15 @@ export class PostGameComponent {
       console.log(ret)
       this.usernames = [...ret, {id : "a0a0aa0d-a00a-0000-0a0a-00aa0a000a00", name : "Guest"}]
     })
+    this.userService.getCurrentUser().subscribe(user => {
+      if(!user) {
+        this.router.navigate(['Login'])
+      return;
+      }
+      this._snackBar.open("Welcome " + user?.name, 'Close', {
+        duration: 3000
+      })
+     })
   }
 
   personalGames : GameDTO[] = []

@@ -17,6 +17,7 @@ import { BlogService } from '../blog.service';
 import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-update-blog-dialog',
@@ -48,7 +49,7 @@ export class UpdateBlogDialogComponent {
   })
 
 
-  constructor(private blogService:BlogService, @Inject(MAT_DIALOG_DATA) public data : Blog, private fb : FormBuilder) {
+  constructor(private blogService:BlogService, private _snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data : Blog, private fb : FormBuilder) {
     
   }
 
@@ -105,6 +106,9 @@ export class UpdateBlogDialogComponent {
     this.blogService.updateBlog(blog).subscribe(ret => {
       if(ret)
         this.successFlag = ret
+      this._snackBar.open("Post has been updated", 'Close', {
+        duration: 3000
+      })
     })
   }
 }

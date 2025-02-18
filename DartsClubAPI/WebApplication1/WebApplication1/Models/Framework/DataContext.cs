@@ -5,11 +5,6 @@ namespace WebApplication1.Models.Framework_Models
 {
     public class DataContext : DbContext
     {
-
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
-        {
-        }
-
         public DbSet<User> Users { get; set; }
 
         public DbSet<Picture> Pictures {  get; set; }
@@ -21,6 +16,10 @@ namespace WebApplication1.Models.Framework_Models
             base.OnModelCreating(mb);
             mb.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
 
+        }
+
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        {
         }
     }
 }

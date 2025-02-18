@@ -323,19 +323,18 @@ namespace WebApplication1.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(UserCreateDTO user)
+        public async Task<ActionResult<User>> CreateUser(UserCreateDTO user)
         {
 
             var User = new User(user);
 
-            var passHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
-            User.Password = passHash;
-
-
+            User.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            
             _context.Users.Add(User);
+
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = User.ID }, User);
+            return Ok(User);
         }
 
         // DELETE: api/Users/5

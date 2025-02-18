@@ -2,6 +2,12 @@
 {
     public class Picture
     {
+        public Guid? Id { get; set; }
+
+        public string imagePath { get; set; }
+
+        public Guid? UserId { get; set; }
+
         public Picture()
         {
         }
@@ -12,11 +18,6 @@
             this.imagePath = imagePath;
         }
 
-        public Guid? Id { get; set; }
-
-        public string imagePath { get; set; }
-
-        public Guid? UserId { get; set; }
 
     }
 }

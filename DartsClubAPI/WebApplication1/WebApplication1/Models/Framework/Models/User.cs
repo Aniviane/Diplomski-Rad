@@ -4,8 +4,6 @@ namespace WebApplication1.Models.Framework.Models
 {
     public class User
     {
-      
-
         public Guid? ID { get; set; }
 
         public string Name { get; set; }
@@ -15,7 +13,6 @@ namespace WebApplication1.Models.Framework.Models
         public string Password { get; set; }
 
         public bool isModerator { get; set; }
-
 
         public List<Reservation> Reservations { get; set; }
 

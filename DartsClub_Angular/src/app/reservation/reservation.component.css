@@ -106,13 +106,16 @@
     gap: 1.25rem;
   }
 
+ 
   .pill-group-dart {
     display: flex;
+    width: 100%;
     align-items:center;
     justify-content: center;
-    flex-wrap:nowrap;
+    flex-wrap:wrap;
     gap: 1.25rem;
   }
+
 
   .pill {
     display: flex;
