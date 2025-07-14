@@ -17,6 +17,7 @@ import { UsernamesDTO } from '../models/UsernamesDTO';
 import { FullGameDTO } from '../models/FullGameDTO';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { PersonalGameDTO } from '../models/PersonalGameDTO';
 @Component({
   selector: 'app-post-game',
   standalone: true,
@@ -114,10 +115,8 @@ export class PostGameComponent {
     fullGame.numOfRounds = this.numberOfRounds
 
     this.personalGames.forEach(elem => {
-      fullGame.bullsEyes.push(elem.bullsEyes)
-      fullGame.tripleTwentys.push(elem.tripleTwenties)
-      fullGame.playerIds.push(elem.userId)
-      fullGame.gameScores.push(elem.score)
+      fullGame.personalGames.push(new PersonalGameDTO(elem))
+      
     })
 
     console.log(fullGame)

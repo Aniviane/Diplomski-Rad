@@ -15,33 +15,24 @@ namespace WebApplication1.Models
         [BsonElement("GameType")]
         public string GameType { get; set; }
 
-        [BsonElement("GameScores")]
-        public List<int> GameScores { get; set; }
-
-        [BsonElement("PlayerIds")]
-        public List<Guid> PlayerIds { get; set; }
-
-        [BsonElement("TripleTwentys")]
-        public List<int> TripleTwentys { get; set; }
-
-        [BsonElement("BullsEyes")]
-        public List<int> BullsEyes { get; set; }
+       
 
         [BsonElement("NumOfRounds")]
         public int NumOfRounds { get; set; }
 
 
+        [BsonElement("PersonalGames")]
+        public List<PersonalGame> PersonalGames { get; set; }
+
+
 
         public Game() { }
 
-        public Game(DateTime date, List<int> gameScores, string gameType, List<Guid> playerIds, List<int> tripleTwentys, List<int> bullsEyes, int numOfRounds)
+        public Game(DateTime date, List<int> gameScores, string gameType, List<PersonalGame> personalGames, int numOfRounds)
         {
             Date = date;
-            GameScores = gameScores;
+            PersonalGames = personalGames;
             GameType = gameType;
-            PlayerIds = playerIds;
-            TripleTwentys = tripleTwentys;
-            BullsEyes = bullsEyes;
             NumOfRounds = numOfRounds;
         }
 

@@ -34,6 +34,18 @@ namespace WebApplication1.Models.DTO_s
 
         public int Rounds { get; set; }
 
+
+        public PersonalGameDTO(PersonalGame game, string gameId, DateTime gameDate, int rounds, string gameType)
+        {
+            GameId = gameId;
+            Score = game.Score;
+            TripleTwenties = game.TripleTwenties;
+            BullsEyes = game.BullsEyes;
+            GameDate = gameDate;
+            Rounds = rounds;
+            GameType = gameType;
+        } 
+
     }
 }
 

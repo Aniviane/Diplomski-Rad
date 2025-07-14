@@ -36,10 +36,10 @@ namespace WebApplication1.Controllers
             return await _mongoService.GetAverages(id);
         }
 
-        [HttpGet("PlayerId/{id}")]
-        public async Task<List<PersonalGameDTO>> GetGamesById(Guid id)
+        [HttpGet("PlayerId/{playerId}")]
+        public async Task<List<PersonalGameDTO>> GetGamesByPlayerId(Guid playerId)
         {
-            return await _mongoService.FindGamesById(id);
+            return await _mongoService.FindGamesById(playerId);
         }
 
         // POST api/<GameController>

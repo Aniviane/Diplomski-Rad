@@ -55,67 +55,56 @@ namespace WebApplication1.Controllers.Services
             await _gameCollection.DeleteOneAsync(x => x.GameId == id);
 
 
-        public async Task<UserAveragesDTO> GetAverages(Guid id)
+        public async Task<UserAveragesDTO> GetAverages(Guid playerId)
         {
 
-            var games = await _gameCollection.Find(x => x.PlayerIds.Contains(id)).ToListAsync();
+
 
             var pipeline = new BsonDocument[]
                 {
                     
-                    // Stage 1: Match documents where the playerIds array contains the specified playerId
-                    new BsonDocument("$match",
-                        new BsonDocument("PlayerIds", id)
-                    ),
 
-                    // Stage 2: Find index of playerId in PlayerIds array and retrieve GameScores and BullsEyes
-                    new BsonDocument("$project",
-                        new BsonDocument
-                        {
-                            {"PlayersId", id },
-                           
-                            { "GameScore",
-                                new BsonDocument("$arrayElemAt", new BsonArray { "$GameScores",
-                                    new BsonDocument("$indexOfArray", new BsonArray { "$PlayerIds", id}) })
-                            },
-                            { "BullsEye",
-                                new BsonDocument("$arrayElemAt", new BsonArray { "$BullsEyes",
-                                    new BsonDocument("$indexOfArray", new BsonArray { "$PlayerIds", id }) })
-                            },
-                            { "TripleTwentys",
-                                new BsonDocument("$arrayElemAt", new BsonArray { "$TripleTwentys",
-                                    new BsonDocument("$indexOfArray", new BsonArray { "$PlayerIds", id }) })
-                            }
-                        }
-                    ),
+            // Stage 1: Match documents where the playerIds array contains the specified playerId
+            new BsonDocument("$match", new BsonDocument
+            {
+                { "GameType", "1v1"},
+                { "PersonalGames.PlayerId",  playerId}
+            }),
 
-                    // Stage 3: Group by any field (e.g., PlayerIdIndex) and calculate averages
+            // Stage 2: Find index of playerId in PlayerIds array and retrieve GameScores and BullsEyes
+            new BsonDocument("$unwind", "$PersonalGames"),
+                       
+            // Stage 3: Match Personal Games to playerId
+
+            new BsonDocument("$match", new BsonDocument("PersonalGames.PlayerId", playerId)),
+
+            // Stage 4: Group by any field (e.g., PlayerIdIndex) and calculate averages
                   
-                    new BsonDocument("$group",
-                    new BsonDocument
-                    {
-                        { "_id", "$PlayersId" },  // Group by PlayerId
-                        { "PointAverage", new BsonDocument("$avg", "$GameScore") },
-                        { "BullsEyeAverage", new BsonDocument("$avg", "$BullsEye") },
-                        { "TripleTwentyAverage", new BsonDocument("$avg", "$TripleTwentys") },
-                        { "WinCount", new BsonDocument("$sum",
-                                    new BsonDocument("$cond", new BsonArray
-                                    {
-                                        new BsonDocument("$eq", new BsonArray { "$GameScore", 301 }),
-                                        1,
-                                        0
-                                    })
-                                )},
-                            { "LossCount", new BsonDocument("$sum",
-                                new BsonDocument("$cond", new BsonArray
-                                {
-                                    new BsonDocument("$ne", new BsonArray { "$GameScore", 301 }),
-                                    1,
-                                    0
-                                })
-                            )}
-                    }
-                )
+            new BsonDocument("$group",
+            new BsonDocument
+            {
+                { "_id", "$PersonalGames.PlayerId" },  // Group by PlayerId
+                { "PointAverage", new BsonDocument("$avg", "$PersonalGames.Score") },
+                { "BullsEyeAverage", new BsonDocument("$avg", "$PersonalGames.BullsEyes") },
+                { "TripleTwentyAverage", new BsonDocument("$avg", "$PersonalGames.TripleTwenties") },
+                { "WinCount", new BsonDocument("$sum",
+                            new BsonDocument("$cond", new BsonArray
+                            {
+                                new BsonDocument("$eq", new BsonArray { "$PersonalGames.Score", 301 }),
+                                1,
+                                0
+                            })
+                        )},
+                    { "LossCount", new BsonDocument("$sum",
+                        new BsonDocument("$cond", new BsonArray
+                        {
+                            new BsonDocument("$ne", new BsonArray { "$PersonalGames.Score", 301 }),
+                            1,
+                            0
+                        })
+                    )}
+            }
+        )
 
 
                 };
@@ -124,50 +113,37 @@ namespace WebApplication1.Controllers.Services
          
 
 
-            var result = _gameCollection.Aggregate<UserAveragesDTO>(pipeline).ToList().FirstOrDefault();
+            var result =  _gameCollection.Aggregate<UserAveragesDTO>(pipeline).ToList().FirstOrDefault();
 
             if (result == null) return new UserAveragesDTO(0,0,0,0,0);
 
             return result;
         }
 
-        public async Task<List<PersonalGameDTO>> FindGamesById(Guid id)
+        public async Task<List<PersonalGameDTO>> FindGamesById(Guid playerId)
         {
 
-            var games = await _gameCollection.Find(x => x.PlayerIds.Contains(id)).ToListAsync();
+            var games = await _gameCollection.Find(x => x.PersonalGames.Any(x => x.PlayerId == playerId)).ToListAsync();
 
             List<PersonalGameDTO> gamesDTO = new List<PersonalGameDTO>();
 
             foreach ( var game in games)
             {
 
-                if (!ValidGame(game)) continue;
 
-                var UserIndex = game.PlayerIds.FindIndex(g => g.Equals(id));
+                var personalGame = game.PersonalGames.Where(x => x.PlayerId == playerId).FirstOrDefault();
 
-                var bullseyes = game.BullsEyes[UserIndex];
-                var tripleTwenties = game.TripleTwentys[UserIndex];
-                var score = game.GameScores[UserIndex];
-                var gameDate = game.Date;
-                gamesDTO.Add(new PersonalGameDTO(game.GameId, score, tripleTwenties, bullseyes, gameDate,game.NumOfRounds, game.GameType));
+                if(personalGame == null) continue;
+
+                gamesDTO.Add(new PersonalGameDTO(personalGame,game.GameId,game.Date,game.NumOfRounds,game.GameType));
+
+            
             }
 
             return gamesDTO;
         }
 
 
-        private bool ValidGame(Game game)
-        {
-
-            var userCount = game.PlayerIds.Count;
-
-            if (game.PlayerIds.Count == userCount &&
-                game.GameScores.Count == userCount &&
-                game.BullsEyes.Count == userCount &&
-                game.TripleTwentys.Count == userCount) return true;
-
-            return false;
-                
-        }
+        
     }
 }
